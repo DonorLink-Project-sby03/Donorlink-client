@@ -1,7 +1,15 @@
-import { Text } from "react-native";
+import { FlatList, Image, Pressable, SafeAreaView, ScrollView, StatusBar, Text, View } from 'react-native';
+import CardChat from '../components/CardChat';
 
 export default function HomePages({ navigation }) {
-    return(
-        <Text>Hello</Text>
-    )
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'grey' }}>
+      <ScrollView>
+        <CardChat />
+        <CardChat />
+        <CardChat />
+        <CardChat />
+      </ScrollView>
+    </SafeAreaView>
+  );
 }
