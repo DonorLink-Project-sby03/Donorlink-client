@@ -1,7 +1,7 @@
 import { FlatList, Image, Pressable, SafeAreaView, ScrollView, StatusBar, Text, View } from 'react-native';
 import CardChat from '../components/CardChat';
 
-let datas = [
+export let datas = [
   {
     id: 1,
     bloodtype: 'AB',
