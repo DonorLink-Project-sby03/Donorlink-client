@@ -28,7 +28,7 @@ export default function Recipient() {
     stock,
     location,
     selected,
-    image: singleFile.assets[0].uri,
+    image: singleFile != null ? singleFile.assets[0].uri : '',
   };
 
   const checkPermissions = async () => {
