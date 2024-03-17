@@ -5,6 +5,7 @@ import { AntDesign, Ionicons } from '@expo/vector-icons';
 import HomePages from '../screens/Home';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { ProfileScreen } from '../screens/ProfileScreen';
 import Recipient from '../screens/Recipient';
 
 const Stack = createNativeStackNavigator();
@@ -19,6 +20,7 @@ export default function TabNavigator() {
 }
 
 function MainTabs({ navigation }) {
+
   return (
     <Tab.Navigator
       screenOptions={({ route, navigation }) => ({
@@ -53,6 +55,14 @@ function MainTabs({ navigation }) {
           headerShown: true,
         }}
       />
+      <Tab.Screen
+          name='Profile'
+          component={ProfileScreen}
+          options={{
+             title: "Profile",
+             headerShown: true    
+                }}
+            />
     </Tab.Navigator>
   );
 }
