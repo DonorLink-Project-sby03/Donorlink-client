@@ -5,6 +5,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import HomePages from "../screens/Home";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { ProfileScreen } from '../screens/ProfileScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -42,6 +43,14 @@ function MainTabs({ navigation }) {
                 component={HomePages}
                 options={{
                     title: "Home",
+                    headerShown: true    
+                }}
+            />
+            <Tab.Screen
+                name='Profile'
+                component={ProfileScreen}
+                options={{
+                    title: "Profile",
                     headerShown: true    
                 }}
             />

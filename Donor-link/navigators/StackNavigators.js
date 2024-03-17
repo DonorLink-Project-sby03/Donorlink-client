@@ -5,12 +5,13 @@ import TabNavigator from './TabNavigator';
 import { AuthContext } from '../context/authContext';
 import LoginScreen from '../screens/LoginScreen';
 import Detail from '../screens/Detail';
+import RegisterScreen from '../screens/Register';
 
 const Stack = createStackNavigator();
 
 export default function StackNavigator() {
   const { isSignedIn } = useContext(AuthContext);
-  const [login, setLogin] = useState(true);
+  const [login, setLogin] = useState(false);
   console.log(isSignedIn, '<<<<');
   return (
     <Stack.Navigator>
