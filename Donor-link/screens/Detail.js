@@ -1,11 +1,25 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Button, Image, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import { FontAwesome6, MaterialIcons } from '@expo/vector-icons';
 import { datas } from './Home';
+import { useState } from 'react';
+import axios from 'axios';
 
 export default function Detail() {
   const { params } = useRoute();
   const navigation = useNavigation();
+  const [stock, setStock] = useState('');
+
+  const handleDonor = async () => {
+    const { data } = await axios({
+      method: 'POST',
+      url: `http://localhost:3000/${params.postId}`,
+      data: { stock },
+    });
+    console.log(data);
+    navigation.navigate('History');
+  };
 
   const data = datas.find((el) => el.id == params.postId);
   return (
@@ -32,8 +46,10 @@ export default function Detail() {
             </View>
           </View>
         </View>
-        <View style={{ paddingHorizontal: '30%' }}>
-          <Button title="Donor" color={'red'} onPress={() => navigation.navigate('Donor')} />
+
+        <View style={{ paddingHorizontal: '10%', marginTop: 20 }}>
+          <TextInput label="Jumlah darah yang akan didonor per kantong" value={stock} onChangeText={(text) => setStock(text)} style={{ marginBottom: 5 }} />
+          <Button title="Donor" color={'red'} onPress={() => handleDonor()} />
         </View>
       </ScrollView>
     </SafeAreaView>
