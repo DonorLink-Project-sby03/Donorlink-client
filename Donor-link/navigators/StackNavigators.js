@@ -10,6 +10,8 @@ import ImgRecipient from '../screens/ImgRecipient';
 import AddForm from '../screens/AddForm';
 import ImgProfile from '../screens/ImgProfile';
 import History from '../screens/History';
+import ConfirmForm from '../screens/ConfimForm';
+import ConfirmImg from '../screens/confirmImg';
 
 const Stack = createStackNavigator();
 
@@ -27,6 +29,8 @@ export default function StackNavigator() {
           <Stack.Screen name="AddForm" component={AddForm} />
           <Stack.Screen name="ImgProfile" component={ImgProfile} />
           <Stack.Screen name="History" component={History} />
+          <Stack.Screen name="Confirm" component={ConfirmForm} />
+          <Stack.Screen name="ConfirmImg" component={ConfirmImg} />
         </>
       ) : (
         <Stack.Screen name="Login" component={LoginScreen} />
