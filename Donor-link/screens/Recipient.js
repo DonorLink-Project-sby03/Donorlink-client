@@ -40,6 +40,8 @@ export default function Recipient() {
 
   const handlePostRecipient = async () => {
     try {
+      console.log(token);
+      console.log(formData);
       const { data } = await axios.post('/recipients', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -50,6 +52,10 @@ export default function Recipient() {
       navigation.navigate('ImgRecipient', {
         postId: data.id,
       });
+      setDescription('');
+      setStock('');
+      setLocation('');
+      setSelected(false);
     } catch (error) {
       console.log(error);
     }
