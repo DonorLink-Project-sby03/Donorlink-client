@@ -9,6 +9,7 @@ export default function CardChat({ data }) {
         onPress={() =>
           navigation.navigate('Detail', {
             postId: data.id,
+            bloodType: data.bloodType,
           })
         }
       >

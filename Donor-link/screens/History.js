@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Button, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import axios from '../instance/config';
 import * as SecureStore from 'expo-secure-store';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import { AuthContext } from '../context/authContext';
 
 export default function History() {
-  const [history, setHistory] = useState([]);
+  const { history, setHistory } = useContext(AuthContext);
   const navigation = useNavigation();
   const token = SecureStore.getItem('access_token');
 
@@ -39,7 +40,7 @@ export default function History() {
                 <Text>Location: {el?.Recipient?.location}</Text>
                 <Text>Jumlalh donor: {el?.stock}</Text>
               </View>
-              {el?.DonorConfirmation == null ? (
+              {!el?.DonorConfirmation ? (
                 <View style={styles.btnApply}>
                   <Button
                     title="Apply"
@@ -53,7 +54,8 @@ export default function History() {
               ) : (
                 <View style={styles.btnApply}>
                   <Button
-                    title="Confirm"
+                    disabled
+                    title="Complete"
                     onPress={() =>
                       navigation.navigate('Confirm', {
                         donorId: el.id,

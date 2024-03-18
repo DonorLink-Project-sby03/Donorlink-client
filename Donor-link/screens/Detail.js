@@ -1,17 +1,20 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Button, Image, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { Button, Image, SafeAreaView, ScrollView, Text, View, Alert } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { FontAwesome6, MaterialIcons } from '@expo/vector-icons';
 import { datas } from './Home';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from '../instance/config';
 import * as SecureStore from 'expo-secure-store';
+import { AuthContext } from '../context/authContext';
 
 export default function Detail() {
   const { params } = useRoute();
   const navigation = useNavigation();
   const [item, setItem] = useState({});
   const [stock, setStock] = useState('');
+
+  const { users } = useContext(AuthContext);
 
   const getRecipient = async () => {
     const { data } = await axios.get('/recipients/' + params.postId);
@@ -20,18 +23,22 @@ export default function Detail() {
 
   const handleDonor = async () => {
     try {
-      const token = SecureStore.getItem('access_token');
-      const { data } = await axios.post(
-        '/donors/' + params.postId,
-        { stock },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(data);
-      navigation.navigate('History');
+      if (params.bloodType === users.Profile?.bloodType) {
+        const token = SecureStore.getItem('access_token');
+        const { data } = await axios.post(
+          '/donors/' + params.postId,
+          { stock },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(data);
+        navigation.navigate('History');
+      } else {
+        Alert.alert('Blood Type Check', 'Blood type not same');
+      }
     } catch (error) {
       console.log(error);
     }

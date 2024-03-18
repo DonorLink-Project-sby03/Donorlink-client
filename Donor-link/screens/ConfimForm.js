@@ -29,7 +29,7 @@ export default function ConfirmForm() {
     console.log(data.id, '<<< dari confirm donor');
     setDonorConfirmId(data.id);
     navigation.navigate('ConfirmImg', {
-      donorConfirmId,
+      donorConfirmId: data.id,
     });
   };
 
