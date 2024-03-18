@@ -40,14 +40,11 @@ export default function Recipient() {
 
   const handlePostRecipient = async () => {
     try {
-      console.log(token);
-      console.log(formData);
       const { data } = await axios.post('/recipients', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(data, '<<< balikan dari post');
       setResultPost(data);
       navigation.navigate('ImgRecipient', {
         postId: data.id,
