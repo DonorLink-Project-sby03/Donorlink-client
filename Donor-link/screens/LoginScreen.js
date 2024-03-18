@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Alert, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import instance from '../instance/config';
-import axios from 'axios';
+import axios from '../instance/config';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -10,15 +10,8 @@ export default function LoginScreen({ navigation }) {
 
   const submitHandler = async () => {
     try {
-      const { data } = await axios({
-        method: 'POST',
-        url: 'https://21c0-103-165-209-194.ngrok-free.app/login',
-        data: {
-          email,
-          password,
-        },
-      });
-      console.log(data.access_token);
+      const { data } = await axios.post('/login', { email, password });
+      console.log(data.access_token, '<<<< token');
       await SecureStore.setItemAsync('access_token', data.access_token);
       navigation.navigate('Home');
     } catch (error) {

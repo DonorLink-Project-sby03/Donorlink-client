@@ -6,19 +6,21 @@ import { AuthContext } from '../context/authContext';
 import LoginScreen from '../screens/LoginScreen';
 import Detail from '../screens/Detail';
 import RegisterScreen from '../screens/Register';
+import ImgRecipient from '../screens/ImgRecipient';
 
 const Stack = createStackNavigator();
 
 export default function StackNavigator() {
   const { isSignedIn } = useContext(AuthContext);
-  const [login, setLogin] = useState(true);
+  const [login, setLogin] = useState(false);
   console.log(isSignedIn, '<<<<');
   return (
     <Stack.Navigator>
-      {login ? (
+      {isSignedIn ? (
         <>
           <Stack.Screen name="Home" options={{ headerShown: false }} component={TabNavigator} />
           <Stack.Screen name="Detail" component={Detail} />
+          <Stack.Screen name="ImgRecipient" component={ImgRecipient} />
         </>
       ) : (
         <Stack.Screen name="Login" component={LoginScreen} />
