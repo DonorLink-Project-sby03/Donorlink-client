@@ -62,7 +62,7 @@ function MainTabs({ navigation }) {
              title: "Profile",
              headerShown: true    
                 }}
-            />
+      />
     </Tab.Navigator>
   );
 }
