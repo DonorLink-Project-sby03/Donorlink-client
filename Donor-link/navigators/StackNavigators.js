@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 
 export default function StackNavigator() {
   const { isSignedIn } = useContext(AuthContext);
-  const [login, setLogin] = useState(false);
+  const [login, setLogin] = useState(true);
   console.log(isSignedIn, '<<<<');
   return (
     <Stack.Navigator>
