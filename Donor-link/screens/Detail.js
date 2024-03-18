@@ -3,23 +3,39 @@ import { Button, Image, SafeAreaView, ScrollView, Text, View } from 'react-nativ
 import { TextInput } from 'react-native-paper';
 import { FontAwesome6, MaterialIcons } from '@expo/vector-icons';
 import { datas } from './Home';
-import { useState } from 'react';
-import axios from 'axios';
+import { useEffect, useState } from 'react';
+import axios from '../instance/config';
+import * as SecureStore from 'expo-secure-store';
 
 export default function Detail() {
   const { params } = useRoute();
   const navigation = useNavigation();
+  const [item, setItem] = useState('');
   const [stock, setStock] = useState('');
 
+  const getRecipient = async () => {
+    const { data } = await axios.get('/recipients');
+    setItem(data);
+  };
+
   const handleDonor = async () => {
-    const { data } = await axios({
-      method: 'POST',
-      url: `http://localhost:3000/${params.postId}`,
-      data: { stock },
-    });
+    const token = await SecureStore.getItem('access_token');
+    const { data } = await axios.post(
+      '/recipients/' + params.postId,
+      { stock },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     console.log(data);
     navigation.navigate('History');
   };
+
+  useEffect(() => {
+    getRecipient();
+  }, []);
 
   const data = datas.find((el) => el.id == params.postId);
   return (
