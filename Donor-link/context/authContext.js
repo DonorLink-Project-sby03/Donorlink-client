@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
 import axios from '../instance/config';
-
 export const AuthContext = createContext('');
+import * as SecureStore from 'expo-secure-store';
 
 export default function AuthContextProvider({ children }) {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -10,7 +10,7 @@ export default function AuthContextProvider({ children }) {
 
   const fetchRecipients = async () => {
     try {
-      const { data } = await axios.get('/recipients');
+      const { data } = await axios.get('/recipients/');
       setItems(data);
     } catch (error) {
       console.log(error);

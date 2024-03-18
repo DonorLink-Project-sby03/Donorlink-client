@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Alert, StyleSheet, Text, TextInput, View, TouchableOpacity } from "react-native";
+import { Alert, StyleSheet, Text, TextInput, View, TouchableOpacity, ImageBackground } from "react-native";
 import * as SecureStore from 'expo-secure-store'
 import instance from "../instance/config";
 import axios from "axios";
@@ -29,25 +29,40 @@ export default function LoginScreen() {
   console.log(password);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry={true}
-        value={password}
-        onChangeText={setPassword}
-      />
-      <TouchableOpacity style={styles.button} onPress={submitHandler}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-    </View>
+    <ImageBackground
+      source={{
+        uri: "https://c4.wallpaperflare.com/wallpaper/345/983/615/digital-art-nature-mountains-portrait-display-wallpaper-preview.jpg",
+      }}
+      style={styles.background}
+    >
+      <View style={styles.container}>
+        <View style={styles.translucentBox}>
+          <Text style={styles.title}>Login</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            secureTextEntry={true}
+            value={password}
+            onChangeText={setPassword}
+          />
+          <TouchableOpacity style={styles.button} onPress={submitHandler}>
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+          <View style={{ flexDirection: 'row', paddingTop: 10 }}> 
+            <Text style={{ fontSize: 16 }}>Don't have an account? </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+              <Text style={{  color: "#3d6cb9", textAlign: "center", fontSize: 16 }}>register</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </ImageBackground>
   );
 }
 
@@ -55,8 +70,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+  },
+  background: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+  },
+  translucentBox: {
+    backgroundColor: "rgba(255, 255, 255, 0.8)", // Transparansi 80%
+    padding: 15,
+    borderRadius: 10,
+    justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
+    marginHorizontal: 20,
   },
   title: {
     fontSize: 24,
@@ -64,16 +90,17 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
-    width: "80%",
+    width: "85%",
     height: 40,
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 5,
     marginBottom: 10,
     paddingLeft: 10,
+    backgroundColor: '#FCFFFD',
   },
   button: {
-    backgroundColor: "blue",
+    backgroundColor: "#305973",
     padding: 10,
     borderRadius: 5,
     marginTop: 10,
@@ -82,5 +109,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
+    width: 245  
   },
 });

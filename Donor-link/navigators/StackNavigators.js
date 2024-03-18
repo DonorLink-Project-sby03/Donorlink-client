@@ -12,6 +12,7 @@ import ImgProfile from '../screens/ImgProfile';
 import History from '../screens/History';
 import ConfirmForm from '../screens/ConfimForm';
 import ConfirmImg from '../screens/confirmImg';
+import Recipient from '../screens/Recipient';
 
 const Stack = createStackNavigator();
 
@@ -31,9 +32,13 @@ export default function StackNavigator() {
           <Stack.Screen name="History" component={History} />
           <Stack.Screen name="Confirm" component={ConfirmForm} />
           <Stack.Screen name="ConfirmImg" component={ConfirmImg} />
+          <Stack.Screen name="Recipants" component={Recipient} />
         </>
       ) : (
-        <Stack.Screen name="Login" component={LoginScreen} />
+        <>
+        <Stack.Screen name="Login" component={LoginScreen} options={{headerTransparent: 'false'}}/>
+        <Stack.Screen name="Register" component={RegisterScreen} options={{headerTransparent: 'true'}}/>
+        </>
       )}
     </Stack.Navigator>
   );
