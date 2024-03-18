@@ -1,5 +1,7 @@
 import { FlatList, Image, Pressable, SafeAreaView, ScrollView, StatusBar, Text, View } from 'react-native';
 import CardChat from '../components/CardChat';
+import axios from '../instance/config';
+import { useDebugValue, useEffect, useState } from 'react';
 
 export let datas = [
   {
@@ -115,6 +117,19 @@ export let datas = [
 ];
 
 export default function HomePages({ navigation }) {
+  const [items, setItems] = useState([]);
+
+  const fetchRecipients = async () => {
+    const { data } = await axios.get('/recipients');
+    setItems(data);
+  };
+
+  useEffect(() => {
+    fetchRecipients();
+  }, []);
+
+  console.log(items, '<<<< data recipients');
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'grey' }}>
       <ScrollView>

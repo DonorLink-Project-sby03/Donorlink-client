@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-const serverUrl = 'http://localhost:3000'
-const instance = axios.create({baseURL: serverUrl})
+const serverUrl = 'https://21c0-103-165-209-194.ngrok-free.app';
+const instance = axios.create({ baseURL: serverUrl });
 
-export default instance
+export default instance;
