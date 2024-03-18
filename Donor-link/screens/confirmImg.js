@@ -4,15 +4,26 @@ import { TextInput } from 'react-native-paper';
 import * as SecureStore from 'expo-secure-store';
 import * as DocumentPicker from 'expo-document-picker';
 import axios from '../instance/config';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { AuthContext } from '../context/authContext';
 
 export default function ConfirmImg() {
   const { params } = useRoute();
   const navigation = useNavigation();
+  const { setHistory } = useContext(AuthContext);
   const token = SecureStore.getItem('access_token');
   const [singleFile, setSingleFile] = useState(null);
-  console.log(params);
+  console.log(params, ',,,,,,,,,,, dari confirm img');
+
+  const fetchDonorByUsers = async () => {
+    const { data } = await axios.get('/donors', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setHistory(data);
+  };
 
   const checkPermissions = async () => {
     try {
@@ -62,7 +73,8 @@ export default function ConfirmImg() {
           },
         });
 
-        navigation.navigate('Confirm');
+        fetchDonorByUsers();
+        navigation.navigate('History');
         console.log('result', res);
         if (res.status == 1) {
           Alert.alert('Info', res.msg);
