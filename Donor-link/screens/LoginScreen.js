@@ -21,9 +21,6 @@ export default function LoginScreen() {
       console.log(data.access_token);
       let token = await SecureStore.setItemAsync("access_token", data.access_token);
       setIsSignedIn(true)
-      if (condition) {
-        
-      }
     } catch (error) {
       console.log(error);
     }

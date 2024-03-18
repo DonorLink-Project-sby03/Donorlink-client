@@ -1,16 +1,19 @@
-import { useRoute } from '@react-navigation/native';
-import { useState } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useContext, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, PermissionsAndroid, Alert } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { TextInput } from 'react-native-paper';
 import axios from '../instance/config';
 import * as SecureStore from 'expo-secure-store';
+import { AuthContext } from '../context/authContext';
 
 export default function ImgRecipient() {
   const { params } = useRoute();
+  const navigation = useNavigation();
   const token = SecureStore.getItem('access_token');
   const [singleFile, setSingleFile] = useState(null);
+  const { setItems } = useContext(AuthContext);
   console.log(params, '<<<< dari img recipient');
 
   const checkPermissions = async () => {
@@ -42,6 +45,12 @@ export default function ImgRecipient() {
     }
   };
 
+  const fetchRecipients = async () => {
+    const { data } = await axios.get('/recipients');
+    // console.log(data[0]?.name, '<<<>>>');
+    setItems(data);
+  };
+
   const uploadImage = async () => {
     if (singleFile != null) {
       const data = new FormData();
@@ -61,6 +70,8 @@ export default function ImgRecipient() {
           },
         });
 
+        navigation.navigate('MainTabs');
+        fetchRecipients();
         console.log('result', res);
         if (res.status == 1) {
           Alert.alert('Info', res.msg);
