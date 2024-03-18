@@ -1,19 +1,22 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Alert, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import instance from '../instance/config';
 import axios from '../instance/config';
+import { AuthContext } from '../context/authContext';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { isSignedIn, setIsSignedIn } = useContext(AuthContext);
 
   const submitHandler = async () => {
     try {
       const { data } = await axios.post('/login', { email, password });
       console.log(data.access_token, '<<<< token');
       await SecureStore.setItemAsync('access_token', data.access_token);
-      navigation.navigate('Home');
+      setIsSignedIn(true);
+      // navigation.navigate('Home');
     } catch (error) {
       console.log(error);
     }
