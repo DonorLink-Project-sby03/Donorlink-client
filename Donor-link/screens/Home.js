@@ -6,12 +6,10 @@ import { AuthContext } from '../context/authContext';
 
 export default function HomePages({ navigation }) {
   const { items } = useContext(AuthContext);
-  console.log(items);
-
-  // console.log(items[0].image, '<<<< data recipients');
+  console.log(items, '<<<< data');
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'grey' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fffdfb' }}>
       <ScrollView>
         {items.map((data) => {
           return <CardChat key={data.id} data={data} />;

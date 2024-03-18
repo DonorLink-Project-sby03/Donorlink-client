@@ -3,7 +3,7 @@ import { useContext, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, PermissionsAndroid, Alert } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { TextInput } from 'react-native-paper';
+import { TextInput } from 'react-native';
 import axios from '../instance/config';
 import * as SecureStore from 'expo-secure-store';
 import { AuthContext } from '../context/authContext';
@@ -111,49 +111,34 @@ export default function ImgRecipient() {
   }
   return (
     <SafeAreaView>
-      <View>
-        <View style={styles.containerInput}>
-          <Text style={styles.inputTitle}>Image</Text>
-          <TextInput onChangeText={(text) => setImage(text)} value={singleFile ? singleFile.assets[0].name : ''} style={styles.inputStyle} />
-        </View>
-
-        {/*Showing the data of selected Single file*/}
-        {/* {console.log(singleFile.assets[0].name, '<<<< cek value')} */}
-        {/* {singleFile != null ? (
-          <Text style={styles.textStyle}>
-            File Name: {singleFile.assets[0].name ? singleFile.assets[0].name : ''}
-            {'\n'}
-            Type: {singleFile.assets[0].mimeType ? singleFile.assets[0].mimeType : ''}
-            {'\n'}
-            File Size: {singleFile.assets[0].size ? singleFile.assets[0].size : ''}
-            {'\n'}
-            URI: {singleFile.assets[0].uri ? singleFile.assets[0].uri : ''}
-            {'\n'}
-          </Text>
-        ) : null} */}
-      </View>
-
       <View style={styles.mainBody}>
         <View style={{ alignItems: 'center' }}>
-          <Text
-            style={{
-              fontSize: 30,
-              textAlign: 'center',
-              marginTop: 20,
-              marginBottom: 30,
-            }}
-          >
-            React Native File Upload Example
+          <Text style={{ fontSize: 30, textAlign: 'center', marginTop: 20, marginBottom: 30 }}>
+            Silahkan Unggah Gambar
           </Text>
         </View>
 
+        {/* Tombol untuk memilih file */}
         <TouchableOpacity style={styles.buttonStyle} activeOpacity={0.5} onPress={selectFile}>
           <Text style={styles.buttonTextStyle}>Select File</Text>
         </TouchableOpacity>
 
+        {/* Tombol untuk mengunggah file */}
         <TouchableOpacity style={styles.buttonStyle} activeOpacity={0.5} onPress={uploadImage}>
           <Text style={styles.buttonTextStyle}>Upload File</Text>
         </TouchableOpacity>
+
+        {/* Input untuk menampilkan nama file terpilih */}
+        {singleFile && (
+          <View style={styles.containerInput}>
+            <Text style={styles.inputTitle}>Gambar:</Text>
+            <TextInput
+              onChangeText={(text) => setImage(text)}
+              value={singleFile ? singleFile.assets[0].name : ''}
+              style={styles.inputStyle}
+            />
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -190,7 +175,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   inputStyle: {
-    borderRadius: 1,
+    width: '100%',
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+    width: 365,
   },
   inputTitle: {
     fontSize: 18,

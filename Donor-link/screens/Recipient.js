@@ -1,8 +1,7 @@
 import { useContext, useState } from 'react';
-import { SafeAreaView, Text, View, Image, Button, Platform, Alert, PermissionsAndroid, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { SafeAreaView, Text, View, Image, Button, Platform, Alert, PermissionsAndroid, TouchableOpacity, StyleSheet, ScrollView, TextInput } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { Dropdown, SelectDropdown } from 'react-native-element-dropdown';
-import { TextInput } from 'react-native-paper';
 import axios from '../instance/config';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native';
@@ -45,6 +44,7 @@ export default function Recipient() {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(data.id, 'id');
       setResultPost(data);
       navigation.navigate('ImgRecipient', {
         postId: data.id,
@@ -68,36 +68,37 @@ export default function Recipient() {
       <ScrollView>
         <View style={{ paddingHorizontal: 15, paddingVertical: 25 }}>
           <View style={styles.containerInput}>
-            <Text style={styles.inputTitle}>Description</Text>
-            <TextInput onChangeText={(text) => setDescription(text)} value={description} style={styles.inputStyle} />
+            <Text style={styles.inputTitle}>Deskripsi: </Text>
+            <TextInput style={styles.input} onChangeText={(text) => setDescription(text)} value={description} />
           </View>
 
           <View style={styles.containerInput}>
-            <Text style={styles.inputTitle}>Stock</Text>
-            <TextInput onChangeText={(text) => setStock(text)} value={stock} style={styles.inputStyle} />
+            <Text style={styles.inputTitle}>Stock:</Text>
+            <TextInput style={styles.input} onChangeText={(text) => setStock(text)} value={stock} />
           </View>
 
           <View style={styles.containerInput}>
-            <Text style={styles.inputTitle}>Location</Text>
-            <TextInput onChangeText={(text) => setLocation(text)} value={location} style={styles.inputStyle} />
+            <Text style={styles.inputTitle}>Lokasi:</Text>
+            <TextInput style={styles.input} onChangeText={(text) => setLocation(text)} value={location} />
           </View>
 
           <View style={styles.containerInput}>
-            <Text style={styles.inputTitle}>Type Blood</Text>
+            <Text style={styles.inputTitle}>Golongan Darah:</Text>
             <Dropdown
               style={styles.dropdown}
               data={typeBlood}
               labelField="value"
               valueField="key"
-              placeholder={selected ? selected : 'Select type blood'}
+              placeholder={selected ? selected : 'Pilih Golongan Darah'}
               onChange={(item) => {
                 setSelected(item.value);
               }}
               value={selected}
             />
           </View>
-          <Button title="Submit" onPress={() => handlePostRecipient()} />
-          <Button title="Logout" onPress={() => handleLogout()} />
+          <TouchableOpacity style={{paddingTop: 20}}>
+          <Button title="Kirim" onPress={() => handlePostRecipient()} />
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -110,33 +111,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  buttonStyle: {
-    backgroundColor: '#307ecc',
-    borderWidth: 0,
-    color: '#FFFFFF',
-    borderColor: '#307ecc',
+  input: {
+    width: "100%",
     height: 40,
-    alignItems: 'center',
-    borderRadius: 30,
-    marginLeft: 35,
-    marginRight: 35,
-    marginTop: 15,
-  },
-  buttonTextStyle: {
-    color: '#FFFFFF',
-    paddingVertical: 10,
-    fontSize: 16,
-  },
-  textStyle: {
-    backgroundColor: '#fff',
-    fontSize: 15,
-    marginTop: 16,
-    marginLeft: 35,
-    marginRight: 35,
-    textAlign: 'center',
-  },
-  inputStyle: {
-    borderRadius: 1,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 10,
   },
   inputTitle: {
     fontSize: 18,
@@ -146,7 +128,6 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     borderWidth: 1,
-    borderColor: 'grey',
     paddingHorizontal: 5,
   },
 });
