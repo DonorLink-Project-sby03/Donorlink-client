@@ -10,6 +10,7 @@ export default function History() {
   const { history, setHistory } = useContext(AuthContext);
   const navigation = useNavigation();
   const token = SecureStore.getItem('access_token');
+  console.log(history, '<<<< dari history');
 
   const fetchDonorByUsers = async () => {
     const { data } = await axios.get('/donors', {
@@ -24,7 +25,7 @@ export default function History() {
     fetchDonorByUsers();
   }, []);
 
-  console.log(history, '<<<< dari history');
+  // console.log(history, '<<<< dari history');
   return (
     <SafeAreaView>
       <ScrollView>
@@ -33,12 +34,12 @@ export default function History() {
             <View key={i} style={styles.container}>
               <View style={styles.containerInner}>
                 {/* {console.log(el?.Recipient?.bloodType, '<<<<<<<')} */}
-                {console.log(el.DonorConfirmation, '<<<<<<<')}
-                <Text>Id: {el.id}</Text>
-                <Text>Name: {el?.Recipient?.User?.name}</Text>
-                <Text>Description: {el?.Recipient?.description}</Text>
-                <Text>Location: {el?.Recipient?.location}</Text>
-                <Text>Jumlalh donor: {el?.stock}</Text>
+                {console.log(el, '<<<<<<< stock')}
+                <Text style={styles.textStyle}>Id: {el?.UserId}</Text>
+                <Text style={styles.textStyle}>Name: {el?.Recipient?.User?.name}</Text>
+                <Text style={styles.textStyle}>Description: {el?.Recipient?.description}</Text>
+                <Text style={styles.textStyle}>Location: {el?.Recipient?.location}</Text>
+                <Text style={styles.textStyle}>Jumlalh donor: {el?.Recipient?.stock} ml</Text>
               </View>
               {!el?.DonorConfirmation ? (
                 <View style={styles.btnApply}>
@@ -47,6 +48,7 @@ export default function History() {
                     onPress={() =>
                       navigation.navigate('Confirm', {
                         donorId: el.id,
+                        stockRecipient: el?.Recipient?.stock,
                       })
                     }
                   />
@@ -74,11 +76,14 @@ export default function History() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '',
+    marginHorizontal: 5,
   },
   containerInner: {
     paddingHorizontal: 10,
-    backgroundColor: 'pink',
+    backgroundColor: 'grey',
+  },
+  textStyle: {
+    color: 'white',
   },
   btnApply: {
     marginBottom: 10,
