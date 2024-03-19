@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Button, StyleSheet, Text, View, PermissionsAndroid } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { Button, StyleSheet, Text, View, PermissionsAndroid, Alert, TextInput } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import axios from '../instance/config';
 import * as DocumentPicker from 'expo-document-picker';
@@ -10,16 +9,15 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 export default function ConfirmForm() {
   const { params } = useRoute();
   const navigation = useNavigation();
+  const [stock, setStock] = useState('');
   const [donorConfirmId, setDonorConfirmId] = useState('');
   const [location, setLocation] = useState('');
   const token = SecureStore.getItem('access_token');
-  const [singleFile, setSingleFile] = useState(null);
-  console.log(params, '<<<<');
 
   const confirmDonor = async () => {
     const { data } = await axios.post(
       '/donorconfirmation/' + params.donorId,
-      { location },
+      { location, stock },
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -35,20 +33,22 @@ export default function ConfirmForm() {
 
   return (
     <View>
-      <View>
-        <Text>Location</Text>
-        <TextInput onChangeText={(text) => setLocation(text)} value={location} placeholder="Input location" />
+      <View style={styles.containerInput}>
+        <Text style={styles.inputTitle}>Location</Text>
+        <TextInput style={styles.inputStyle} onChangeText={(text) => setLocation(text)} value={location} placeholder="Input location" />
       </View>
-      <Button title="Submit" onPress={() => confirmDonor()} />
+      <View style={styles.containerInput}>
+        <Text style={styles.inputTitle}>Stock</Text>
+        <TextInput style={styles.inputStyle} onChangeText={(text) => setStock(text)} value={stock} placeholder="Input blood" />
+      </View>
+      <TouchableOpacity style={styles.buttonStyle} onPress={() => confirmDonor()}>
+        <Text style={styles.buttonTextStyle}>Submit</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  mainBody: {
-    justifyContent: 'center',
-    padding: 20,
-  },
   buttonStyle: {
     backgroundColor: '#307ecc',
     borderWidth: 0,
@@ -75,17 +75,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   inputStyle: {
-    borderRadius: 1,
+    height: 40,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+    borderColor: 'gray',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    marginHorizontal: 15,
   },
   inputTitle: {
+    marginLeft: 15,
+    marginBottom: 5,
     fontSize: 18,
   },
   containerInput: {
-    marginBottom: 5,
-  },
-  dropdown: {
-    borderWidth: 1,
-    borderColor: 'grey',
-    paddingHorizontal: 5,
+    marginBottom: 10,
   },
 });

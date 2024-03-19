@@ -7,8 +7,8 @@ let donation = 1
 export default function CardChat({ data }) {
   const navigation = useNavigation();
   useEffect(() => {
-    data
-  }, [])
+    data;
+  }, []);
   console.log(data, 'data<<<<');
   
   let total = (donation / data.stock ) * 100
