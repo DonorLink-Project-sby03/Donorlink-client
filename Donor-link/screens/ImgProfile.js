@@ -21,7 +21,6 @@ export default function ImgProfile() {
     try {
       console.log("masuk");
       const result = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
-      console.log(result,'<<<');
       if (!result) {
         const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, {
           title: 'You need to give storage permission to download and save the file',
