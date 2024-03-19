@@ -16,14 +16,15 @@ import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/authContext";
 import { useContext, useEffect, useState } from "react";
 import instance from "../instance/config";
+import { Fontisto } from '@expo/vector-icons';
 
 export const ProfileScreen = () => {
   const [data, setData] = useState("");
   const [user, setUser] = useState("");
   const navigation = useNavigation();
+  const { fetchUser, users } = useContext(AuthContext);
+
   let getData = async () => {
-    let token = await SecureStore.getItemAsync("access_token" || null);
-    console.log(token);
     try {
       const { data } = await instance({
         headers: {
@@ -62,12 +63,11 @@ export const ProfileScreen = () => {
     getDataUser();
   }, []);
 
-  const { isSignedIn, setIsSignedIn } = useContext(AuthContext);
+  const { setIsSignedIn } = useContext(AuthContext);
   const handeLogout = async () => {
     try {
       await SecureStore.deleteItemAsync("access_token");
       setIsSignedIn(false);
-      // navigation.navigate("Login")
     } catch (error) {
       console.log(error);
     }
@@ -79,19 +79,22 @@ export const ProfileScreen = () => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
+  console.log(data,'<< data ');
+  console.log(users,'<< users');
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor:'blue' }}>
       <StatusBar barStyle={"light-content"} backgroundColor="#212121" />
       <ImageBackground
-        source={{
-          uri: "https://c4.wallpaperflare.com/wallpaper/760/955/638/artwork-landscape-sky-mountains-wallpaper-thumb.jpg",
-        }}
+        source={require("../assets/logo.png")}
         style={{
           flex: 0.5,
           borderBottomLeftRadius: 100,
           borderBottomRightRadius: 100,
+          width: 100,
+          height: 100,
+          backgroundColor: 'pink'
         }}
         resizeMode={"cover"}
       >
@@ -102,8 +105,8 @@ export const ProfileScreen = () => {
           <Image
             source={{
               uri:
-                data && data.imageUrl
-                  ? data.imageUrl
+                users.Profile &&  users.Profile?.imageUrl
+                  ? users.Profile?.imageUrl
                   : "https://th.bing.com/th/id/OIP.xo-BCC1ZKFpLL65D93eHcgHaGe?rs=1&pid=ImgDetMain",
             }}
             style={{
@@ -118,8 +121,8 @@ export const ProfileScreen = () => {
             }}
           />
         </View>
-        {data ? (
-          <>
+        {data || users ? (
+          <View>
             <View>
               <Text
                 style={{
@@ -129,37 +132,43 @@ export const ProfileScreen = () => {
                   marginTop: 60,
                 }}
               >
-                {data.User?.name}
+                {users.name}
               </Text>
               <View style={{ marginLeft: 110 }}>
+              <View style={styles.rowContainer}>
+                <Fontisto name="blood-drop" size={24} color="#F75369" />
+                <View style={styles.textContainer}>
+                  <Text>{users.Profile?.bloodType}</Text>
+                </View>
+              </View>
                 <View style={styles.rowContainer}>
-                  <Foundation name="telephone" size={35} color="black" />
+                  <Foundation name="telephone" size={35} color="#F75369" />
                   <View style={styles.textContainer}>
-                    <Text>{data.phoneNumber}</Text>
+                    <Text>{users.Profile?.phoneNumber}</Text>
                   </View>
                 </View>
                 <View style={styles.rowContainer}>
-                  <Entypo name="location" size={25} color="black" />
+                  <Entypo name="location" size={25} color="#F75369" />
                   <View style={styles.textContainer}>
-                    <Text>{data.address}</Text>
+                    <Text>{users.Profile?.address}</Text>
                   </View>
                 </View>
                 <View style={styles.rowContainer}>
-                  <Entypo name="suitcase" size={25} color="black" />
+                  <Entypo name="suitcase" size={25} color="#F75369" />
                   <View style={styles.textContainer}>
-                    <Text>{data.job}</Text>
+                    <Text>{users.Profile?.job}</Text>
                   </View>
                 </View>
                 <View style={styles.rowContainer}>
-                  <Entypo name="v-card" size={25} color="black" />
+                  <Entypo name="v-card" size={25} color="#F75369" />
                   <View style={styles.textContainer}>
-                    <Text>{data.identityNumber}</Text>
+                    <Text>{users.Profile?.identityNumber}</Text>
                   </View>
                 </View>
                 <View style={styles.rowContainer}>
-                  <FontAwesome name="birthday-cake" size={25} color="black" />
+                  <FontAwesome name="birthday-cake" size={25} color="#F75369" />
                   <View style={styles.textContainer}>
-                    <Text>{data.dateOfBirth.split("T")[0]}</Text>
+                    <Text>{users.Profile?.dateOfBirth.split("T")[0]}</Text>
                   </View>
                 </View>
               </View>
@@ -169,10 +178,10 @@ export const ProfileScreen = () => {
                 onPress={handeLogout}
                 style={styles.logoutButton}
               >
-                <Feather name="log-out" size={30} color="black" />
+                <Feather name="log-out" size={30} color="#F75369" />
               </TouchableOpacity>
             </View>
-          </>
+          </View>
         ) : (
           <View style={styles.addButtonContainer}>
             <View style={styles.logoutButtonContainer}>
@@ -180,25 +189,13 @@ export const ProfileScreen = () => {
                 onPress={handeLogout}
                 style={styles.logoutButton}
               >
-                <Feather name="log-out" size={30} color="black" />
+                <Feather name="log-out" size={30} color="#F75369" />
               </TouchableOpacity>
             </View>
-            <Text style={{ fontSize: 17, paddingBottom: 10 }}>
+            <Text style={{ fontSize: 17 }}>
               Hello {user.username} please add profile information!
             </Text>
-            <TouchableOpacity
-              onPress={handleAddProfile}
-              style={{
-                backgroundColor: "#ffcc00",
-                height: 30,
-                width: 100,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 5
-              }}
-            >
-              <Text style={{ fontSize: 20 }}>Add Profile</Text>
-            </TouchableOpacity>
+            <Button title="Add Profile" onPress={handleAddProfile} />
           </View>
         )}
       </View>
