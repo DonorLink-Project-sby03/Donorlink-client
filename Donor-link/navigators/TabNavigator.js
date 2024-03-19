@@ -40,7 +40,7 @@ function MainTabs() {
           } else if (route.name === "Profile") {
             iconName = focused ? "user-circle-o" : "user-circle";
             return <FontAwesome name={iconName} size={30} color={"#F75369"} />;
-          } else if (route.name === "AddForm") {
+          } else if (route.name === "Recipants") {
             iconName = focused ? "add-circle" : "add-circle-outline";
             return <MaterialIcons name={iconName} size={30} color={"#F75369"} />;
           } 
@@ -62,8 +62,8 @@ function MainTabs() {
         })}
       />
       <Tab.Screen
-        name="AddForm"
-        component={AddForm}
+        name="Recipants"
+        component={Recipient}
         options={{
           title: "Hello",
           headerShown: false,

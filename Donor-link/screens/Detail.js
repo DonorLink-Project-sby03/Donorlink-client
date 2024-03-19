@@ -9,25 +9,6 @@ import { AuthContext } from '../context/authContext';
 import MapView, { Callout, Marker } from 'react-native-maps';
 import { TextInput } from 'react-native-gesture-handler';
 
-let locationOfInterest = [
-  {
-    title: 'Royal plaza',
-    location: {
-      latitude: -7.308914693845564,
-      longitude: 112.73497710004449,
-    },
-    description: 'My First Marker',
-  },
-  {
-    title: 'RSPAL',
-    location: {
-      latitude: -7.308649317357412,
-      longitude: 112.73842507973313,
-    },
-    description: 'My Second Marker',
-  },
-];
-
 export default function Detail() {
   const { params } = useRoute();
   const navigation = useNavigation();
@@ -40,8 +21,9 @@ export default function Detail() {
     latitude: -26.85,
   });
 
+  console.log(params, '<<<<< params');
+
   const { users } = useContext(AuthContext);
-  console.log(users, '<<<<< users');
 
   const onRegionChange = (region) => {
     console.log(region);
@@ -56,6 +38,7 @@ export default function Detail() {
   const getRecipient = async () => {
     const { data } = await axios.get('/recipients/' + params.postId);
     setItem(data);
+    console.log(item, '<<<<< item didala function getRecipient');
   };
 
   const fetchProfile = async () => {
@@ -73,26 +56,26 @@ export default function Detail() {
   };
 
   const handleDonor = async () => {
-    try {
-      if (!profile) {
-        Alert.alert('Profile', 'Please complete your profile first');
-        navigation.navigate('Profile');
+    if (!profile) {
+      Alert.alert('Profile', 'Please complete your profile first');
+      navigation.navigate('Profile');
+    } else {
+      try {
+        const token = SecureStore.getItem('access_token');
+        const { data } = await axios.post(
+          '/donors/' + params.postId,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        navigation.navigate('History');
+      } catch (error) {
+        console.log(error);
+        Alert.alert('NotAcceptable', 'Sorry your blood type is not suitable for donation.');
       }
-
-      const token = SecureStore.getItem('access_token');
-      const { data } = await axios.post(
-        '/donors/' + params.postId,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      navigation.navigate('History');
-    } catch (error) {
-      console.log(error);
-      Alert.alert('NotAcceptable', 'Sorry your blood type is not suitable for donation.');
     }
   };
 
@@ -101,11 +84,25 @@ export default function Detail() {
     fetchProfile();
   }, []);
 
-  console.log(profile, '<<<<< item');
+  console.log(item, '<<<<< item');
+
+  let latitude = params?.latitude !== undefined ? parseFloat(params.latitude) : -7.299675758351519;
+  let longitude = params?.longitude !== undefined ? parseFloat(params.longitude) : 112.74147910997272;
+
+  let locationOfInterest = [
+    {
+      title: params?.location.split('-')[0],
+      location: {
+        latitude,
+        longitude,
+      },
+      description: params?.location.split('-')[1],
+    },
+  ];
 
   return (
     <SafeAreaView>
-      <MapView style={{ width: '100%', height: '50%' }} onRegionChange={onRegionChange} initialRegion={{ latitude: -7.299675758351519, latitudeDelta: 0.24357150578851883, longitude: 112.74147910997272, longitudeDelta: 0.1615377143025114 }}>
+      <MapView style={{ width: '100%', height: '50%' }} onRegionChange={onRegionChange} initialRegion={{ latitude: latitude, latitudeDelta: 0.24357150578851883, longitude: longitude, longitudeDelta: 0.1615377143025114 }}>
         {showLocationOfInterest()}
         <Marker draggable pinColor="blue" coordinate={draggableMarkerCoor} onDragEnd={(e) => setDraggableMarkerCoor(e.nativeEvent.coordinate)} />
 
