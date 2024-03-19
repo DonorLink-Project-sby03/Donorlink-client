@@ -43,6 +43,7 @@ export default function AuthContextProvider({ children }) {
     }
   };
 
+
   useEffect(() => {
     async function getToken() {
       try {

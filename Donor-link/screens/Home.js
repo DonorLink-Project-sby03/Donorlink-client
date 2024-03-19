@@ -6,6 +6,7 @@ import { AuthContext } from '../context/authContext';
 
 export default function HomePages({ navigation }) {
   const { items } = useContext(AuthContext);
+  
   console.log(items, '<<<< data');
 
   return (
