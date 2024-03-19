@@ -1,12 +1,20 @@
 import { useState } from 'react';
-import { Alert, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
+import { Alert, StyleSheet, Text, TextInput, View, TouchableOpacity, Button } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import instance from '../instance/config';
 import axios from '../instance/config';
+import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin'
+
+GoogleSignin.configure({
+  webClientId: '',
+});
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [infoGoogle,setInfoGoogle] = useState({
+    userInfo:''
+  })
 
   const submitHandler = async () => {
     try {
@@ -21,6 +29,16 @@ export default function LoginScreen({ navigation }) {
   console.log(email);
   console.log(password);
 
+  signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      setInfoGoogle({ userInfo });
+    } catch (error) {
+      console.log(error,'<< error google login');
+    }
+  };
+console.log(infoGoogle,'<< hasil login');
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
@@ -29,6 +47,12 @@ export default function LoginScreen({ navigation }) {
       <TouchableOpacity style={styles.button} onPress={submitHandler}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
+      <GoogleSigninButton
+        size={GoogleSigninButton.Size.Wide}
+        color={GoogleSigninButton.Color.Dark}
+        onPress={this._signIn}
+        disabled={this.state.isSigninInProgress}
+      />
     </View>
   );
 }
