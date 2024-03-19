@@ -1,6 +1,5 @@
-import { StyleSheet, Text, View, PermissionsAndroid } from 'react-native';
+import { StyleSheet, Text, View, PermissionsAndroid, TextInput } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { TextInput } from 'react-native-paper';
 import * as SecureStore from 'expo-secure-store';
 import * as DocumentPicker from 'expo-document-picker';
 import axios from '../instance/config';
@@ -14,7 +13,6 @@ export default function ConfirmImg() {
   const { setHistory } = useContext(AuthContext);
   const token = SecureStore.getItem('access_token');
   const [singleFile, setSingleFile] = useState(null);
-  console.log(params, ',,,,,,,,,,, dari confirm img');
 
   const fetchDonorByUsers = async () => {
     const { data } = await axios.get('/donors', {
@@ -117,7 +115,7 @@ export default function ConfirmImg() {
     <View>
       <View style={styles.containerInput}>
         <Text style={styles.inputTitle}>Image</Text>
-        <TextInput onChangeText={(text) => setImage(text)} value={singleFile ? singleFile.assets[0].name : ''} style={styles.inputStyle} />
+        <TextInput onChangeText={(text) => setImage(text)} value={singleFile ? singleFile.assets[0].name : ''} style={styles.inputStyle} placeholder="Select file" />
       </View>
 
       <TouchableOpacity style={styles.buttonStyle} activeOpacity={0.5} onPress={selectFile}>
@@ -162,13 +160,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   inputStyle: {
-    borderRadius: 1,
+    height: 40,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+    borderColor: 'gray',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    marginHorizontal: 15,
   },
   inputTitle: {
+    marginLeft: 15,
+    marginBottom: 5,
     fontSize: 18,
   },
   containerInput: {
-    marginBottom: 5,
+    marginBottom: 10,
   },
   dropdown: {
     borderWidth: 1,
