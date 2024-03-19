@@ -81,8 +81,7 @@ export const ProfileScreen = () => {
     } catch (error) {
       console.log(error);
     }
-  }
-  console.log(data,'<< data user');
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -192,10 +191,22 @@ export const ProfileScreen = () => {
                 <Feather name="log-out" size={30} color="black" />
               </TouchableOpacity>
             </View>
-            <Text style={{ fontSize: 17 }}>
+            <Text style={{ fontSize: 17, paddingBottom: 10 }}>
               Hello {user.username} please add profile information!
             </Text>
-            <Button title="Add Profile" onPress={handleAddProfile} />
+            <TouchableOpacity
+              onPress={handleAddProfile}
+              style={{
+                backgroundColor: "#ffcc00",
+                height: 30,
+                width: 100,
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 5
+              }}
+            >
+              <Text style={{ fontSize: 20 }}>Add Profile</Text>
+            </TouchableOpacity>
           </View>
         )}
       </View>

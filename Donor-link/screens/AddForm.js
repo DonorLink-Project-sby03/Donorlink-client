@@ -72,6 +72,7 @@ export default function AddForm() {
   return (
     <SafeAreaView>
     <ScrollView style={styles.scrollView}>
+      <Text style={{alignItems: 'center', justifyContent: 'center', alignSelf: 'center', fontSize: 30}}>Postingan</Text>
         <View style={styles.container}>
           <Text style={styles.label}>No Identitas:</Text>
           <TextInput
@@ -169,7 +170,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
-    backgroundColor: "#007bff",
+    backgroundColor: "#F75369",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
