@@ -121,7 +121,7 @@ export const ProfileScreen = () => {
             }}
           />
         </View>
-        {data || users ? (
+        {data || users.Profile ? (
           <View>
             <View>
               <Text
