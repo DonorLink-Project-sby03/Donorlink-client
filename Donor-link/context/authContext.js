@@ -2,7 +2,6 @@ import { createContext, useEffect, useState } from 'react';
 import axios from '../instance/config';
 import * as SecureStore from 'expo-secure-store';
 export const AuthContext = createContext('');
-import * as SecureStore from 'expo-secure-store';
 
 export default function AuthContextProvider({ children }) {
   const [isSignedIn, setIsSignedIn] = useState(false);
