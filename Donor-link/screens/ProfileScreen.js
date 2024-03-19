@@ -19,27 +19,29 @@ import instance from "../instance/config";
 import { Fontisto } from '@expo/vector-icons';
 
 export const ProfileScreen = () => {
-  // const [data, setData] = useState("");
+  const [data, setData] = useState("");
   const [user, setUser] = useState("");
   const navigation = useNavigation();
-  const { users,setUsers } = useContext(AuthContext);
+  const { fetchUser, users } = useContext(AuthContext);
 
-  // let getData = async () => {
-  //   try {
-  //     const { data } = await instance({
-  //       headers: {
-  //         Authorization: `Bearer ${await SecureStore.getItemAsync(
-  //           "access_token"
-  //         )}`,
-  //       },
-  //       method: "GET",
-  //       url: "/profile/",
-  //     });
-  //     setData(data);
-  //   } catch (error) {
-  //     console.log();
-  //   }
-  // };
+  let getData = async () => {
+    // let token = await SecureStore.getItemAsync("access_token" || null);
+    // console.log(token);
+    try {
+      const { data } = await instance({
+        headers: {
+          Authorization: `Bearer ${await SecureStore.getItemAsync(
+            "access_token"
+          )}`,
+        },
+        method: "GET",
+        url: "/profile/",
+      });
+      setData(data);
+    } catch (error) {
+      console.log();
+    }
+  };
 
   let getDataUser = async () => {
     try {
@@ -59,7 +61,7 @@ export const ProfileScreen = () => {
   };
 
   useEffect(() => {
-    // getData();
+    getData();
     getDataUser();
   }, []);
 
@@ -68,8 +70,6 @@ export const ProfileScreen = () => {
     try {
       await SecureStore.deleteItemAsync("access_token");
       setIsSignedIn(false);
-      setUser({})
-      // navigation.navigate("Login")
     } catch (error) {
       console.log(error);
     }
@@ -82,6 +82,7 @@ export const ProfileScreen = () => {
       console.log(error);
     }
   }
+  console.log(data,'<< data user');
 
   return (
     <View style={{ flex: 1 }}>
@@ -120,7 +121,7 @@ export const ProfileScreen = () => {
             }}
           />
         </View>
-        {users.Profile ? (
+        {data.User ? (
           <>
             <View>
               <Text
@@ -131,14 +132,14 @@ export const ProfileScreen = () => {
                   marginTop: 60,
                 }}
               >
-                {users.name}
+                {data.User?.name}
               </Text>
               <View style={{ marginLeft: 110 }}>
-              <View style={styles.rowContainer}>
-                <Fontisto name="blood-drop" size={24} color="black" />
-                <View style={styles.textContainer}>
-                  <Text>{users.Profile?.bloodType}</Text>
-                </View>
+                <View style={styles.rowContainer}>
+                  <Fontisto name="blood-drop" size={24} color="black" />
+                  <View style={styles.textContainer}>
+                    <Text>{users.Profile?.bloodType}</Text>
+                  </View>
                 </View>
                 <View style={styles.rowContainer}>
                   <Foundation name="telephone" size={35} color="black" />
