@@ -79,7 +79,7 @@ export default function Recipient() {
 
           <View style={styles.containerInput}>
             <Text style={styles.inputTitle}>Lokasi:</Text>
-            <TextInput style={styles.input} onChangeText={(text) => setLocation(text)} value={location} />
+            <TextInput style={styles.input} onChangeText={(text) => setLocation(text)} value={location} placeholder="Kabupaten-Provinsi" />
           </View>
 
           <View style={styles.containerInput}>
@@ -96,8 +96,8 @@ export default function Recipient() {
               value={selected}
             />
           </View>
-          <TouchableOpacity style={{paddingTop: 20}}>
-          <Button title="Kirim" onPress={() => handlePostRecipient()} />
+          <TouchableOpacity style={{ paddingTop: 20 }}>
+            <Button title="Kirim" onPress={() => handlePostRecipient()} />
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -112,10 +112,10 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   input: {
-    width: "100%",
+    width: '100%',
     height: 40,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 10,

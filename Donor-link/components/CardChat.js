@@ -7,7 +7,7 @@ export default function CardChat({ data }) {
   useEffect(() => {
     data;
   }, []);
-  console.log(data, 'data<<<<');
+  // console.log(data, 'data<<<<');
   return (
     <View style={{ backgroundColor: 'white', marginBottom: 5 }}>
       {data ? (
@@ -16,6 +16,9 @@ export default function CardChat({ data }) {
             navigation.navigate('Detail', {
               postId: data.id,
               bloodType: data.bloodType,
+              latitude: data.latitude,
+              longitude: data.longitude,
+              location: data.location,
             })
           }
         >
