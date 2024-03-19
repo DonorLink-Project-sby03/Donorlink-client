@@ -1,5 +1,5 @@
-import { useRoute } from '@react-navigation/native';
-import { useState } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useContext, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, PermissionsAndroid, Alert } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -7,18 +7,20 @@ import { TextInput } from 'react-native-paper';
 import axios from '../instance/config';
 import * as SecureStore from 'expo-secure-store';
 import instance from '../instance/config';
+import { AuthContext } from '../context/authContext';
 
 export default function ImgProfile() {
   const { params } = useRoute();
-  const token = SecureStore.getItemAsync('access_token');
+  const token = SecureStore.getItem('access_token');
   const [singleFile, setSingleFile] = useState(null);
-  console.log(params, '<<<< dari img recipient');
+  const navigation = useNavigation()
+  const { setUsers } = useContext(AuthContext);
+
 
   const checkPermissions = async () => {
     try {
       console.log("masuk");
       const result = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
-      console.log(result,'<<<');
       if (!result) {
         const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, {
           title: 'You need to give storage permission to download and save the file',
@@ -44,6 +46,16 @@ export default function ImgProfile() {
     }
   };
 
+  const fetchNewProfile = async () => {
+    const { data } = await axios.get('/users', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setUsers(data);
+  }
+
   const uploadImage = async () => {
     if (singleFile != null) {
       const data = new FormData();
@@ -63,9 +75,10 @@ export default function ImgProfile() {
           },
         });
 
-        console.log('result', res);
-        if (res.status == 1) {
-          Alert.alert('Info', res.msg);
+        fetchNewProfile()
+        navigation.navigate('Profile')
+        if (res.status == 200) {
+          Alert.alert('Info', "Success upload profile");
         }
       } catch (error) {
         // Error retrieving data
