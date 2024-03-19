@@ -24,6 +24,10 @@ export default function CardChat({ data }) {
           onPress={() =>
             navigation.navigate('Detail', {
               postId: data.id,
+              bloodType: data.bloodType,
+              latitude: data.latitude,
+              longitude: data.longitude,
+              location: data.location,
             })
           }
         >
