@@ -2,7 +2,6 @@ import { createContext, useEffect, useState } from 'react';
 import axios from '../instance/config';
 import * as SecureStore from 'expo-secure-store';
 export const AuthContext = createContext('');
-import * as SecureStore from 'expo-secure-store';
 
 export default function AuthContextProvider({ children }) {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -63,5 +62,5 @@ export default function AuthContextProvider({ children }) {
     getToken();
   }, []);
 
-  return <AuthContext.Provider value={{ isSignedIn, setIsSignedIn, items, setItems, history, setHistory, users }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ isSignedIn, setIsSignedIn, items, setItems, history, setHistory, users, fetchUser, setUsers }}>{children}</AuthContext.Provider>;
 }

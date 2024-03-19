@@ -16,29 +16,30 @@ import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/authContext";
 import { useContext, useEffect, useState } from "react";
 import instance from "../instance/config";
+import { Fontisto } from '@expo/vector-icons';
 
 export const ProfileScreen = () => {
-  const [data, setData] = useState("");
+  // const [data, setData] = useState("");
   const [user, setUser] = useState("");
   const navigation = useNavigation();
-  let getData = async () => {
-    let token = await SecureStore.getItemAsync("access_token" || null);
-    console.log(token);
-    try {
-      const { data } = await instance({
-        headers: {
-          Authorization: `Bearer ${await SecureStore.getItemAsync(
-            "access_token"
-          )}`,
-        },
-        method: "GET",
-        url: "/profile/",
-      });
-      setData(data);
-    } catch (error) {
-      console.log();
-    }
-  };
+  const { users,setUsers } = useContext(AuthContext);
+
+  // let getData = async () => {
+  //   try {
+  //     const { data } = await instance({
+  //       headers: {
+  //         Authorization: `Bearer ${await SecureStore.getItemAsync(
+  //           "access_token"
+  //         )}`,
+  //       },
+  //       method: "GET",
+  //       url: "/profile/",
+  //     });
+  //     setData(data);
+  //   } catch (error) {
+  //     console.log();
+  //   }
+  // };
 
   let getDataUser = async () => {
     try {
@@ -58,15 +59,16 @@ export const ProfileScreen = () => {
   };
 
   useEffect(() => {
-    getData();
+    // getData();
     getDataUser();
   }, []);
 
-  const { isSignedIn, setIsSignedIn } = useContext(AuthContext);
+  const { setIsSignedIn } = useContext(AuthContext);
   const handeLogout = async () => {
     try {
       await SecureStore.deleteItemAsync("access_token");
       setIsSignedIn(false);
+      setUser({})
       // navigation.navigate("Login")
     } catch (error) {
       console.log(error);
@@ -102,8 +104,8 @@ export const ProfileScreen = () => {
           <Image
             source={{
               uri:
-                data && data.imageUrl
-                  ? data.imageUrl
+                users.Profile &&  users.Profile?.imageUrl
+                  ? users.Profile?.imageUrl
                   : "https://th.bing.com/th/id/OIP.xo-BCC1ZKFpLL65D93eHcgHaGe?rs=1&pid=ImgDetMain",
             }}
             style={{
@@ -118,7 +120,7 @@ export const ProfileScreen = () => {
             }}
           />
         </View>
-        {data ? (
+        {users.Profile ? (
           <>
             <View>
               <Text
@@ -129,37 +131,43 @@ export const ProfileScreen = () => {
                   marginTop: 60,
                 }}
               >
-                {data.User?.name}
+                {users.name}
               </Text>
               <View style={{ marginLeft: 110 }}>
+              <View style={styles.rowContainer}>
+                <Fontisto name="blood-drop" size={24} color="black" />
+                <View style={styles.textContainer}>
+                  <Text>{users.Profile?.bloodType}</Text>
+                </View>
+                </View>
                 <View style={styles.rowContainer}>
                   <Foundation name="telephone" size={35} color="black" />
                   <View style={styles.textContainer}>
-                    <Text>{data.phoneNumber}</Text>
+                    <Text>{users.Profile?.phoneNumber}</Text>
                   </View>
                 </View>
                 <View style={styles.rowContainer}>
                   <Entypo name="location" size={25} color="black" />
                   <View style={styles.textContainer}>
-                    <Text>{data.address}</Text>
+                    <Text>{users.Profile?.address}</Text>
                   </View>
                 </View>
                 <View style={styles.rowContainer}>
                   <Entypo name="suitcase" size={25} color="black" />
                   <View style={styles.textContainer}>
-                    <Text>{data.job}</Text>
+                    <Text>{users.Profile?.job}</Text>
                   </View>
                 </View>
                 <View style={styles.rowContainer}>
                   <Entypo name="v-card" size={25} color="black" />
                   <View style={styles.textContainer}>
-                    <Text>{data.identityNumber}</Text>
+                    <Text>{users.Profile?.identityNumber}</Text>
                   </View>
                 </View>
                 <View style={styles.rowContainer}>
                   <FontAwesome name="birthday-cake" size={25} color="black" />
                   <View style={styles.textContainer}>
-                    <Text>{data.dateOfBirth.split("T")[0]}</Text>
+                    <Text>{users.Profile?.dateOfBirth.split("T")[0]}</Text>
                   </View>
                 </View>
               </View>
