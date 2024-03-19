@@ -36,8 +36,8 @@ export default function StackNavigator() {
         </>
       ) : (
         <>
-        <Stack.Screen name="Login" component={LoginScreen} options={{headerTransparent: 'false'}}/>
-        <Stack.Screen name="Register" component={RegisterScreen} options={{headerTransparent: 'true'}}/>
+        <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>
+        <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown: false}}/>
         </>
       )}
     </Stack.Navigator>

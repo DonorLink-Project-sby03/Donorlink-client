@@ -10,6 +10,7 @@ import Recipient from "../screens/Recipient";
 import { FontAwesome } from "@expo/vector-icons";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
+import AddForm from "../screens/AddForm";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -35,11 +36,14 @@ function MainTabs() {
           let iconName;
           if (route.name === "Home") {
             iconName = focused ? "home" : "home-outline";
-            return <Ionicons name={iconName} size={size} color={"black"} />;
+            return <Ionicons name={iconName} size={30} color={"#F75369"} />;
           } else if (route.name === "Profile") {
             iconName = focused ? "user-circle-o" : "user-circle";
-            return <FontAwesome name={iconName} size={size} color={"black"} />;
-          }
+            return <FontAwesome name={iconName} size={30} color={"#F75369"} />;
+          } else if (route.name === "Recipants") {
+            iconName = focused ? "add-circle" : "add-circle-outline";
+            return <MaterialIcons name={iconName} size={30} color={"#F75369"} />;
+          } 
         },
       })}
       tabBarOptions={{
@@ -54,17 +58,16 @@ function MainTabs() {
           headerStyle: {
             backgroundColor: '#fbfbfb'
           },
-          headerRight: () => (
-            <MaterialIcons
-              name="add-box"
-              size={30}
-              color="black"
-              onPress={() => navigation.navigate("Recipants")}
-              style={{ marginRight: 10 }}
-            />
-          ),
           headerShown: true,
         })}
+      />
+      <Tab.Screen
+        name="Recipants"
+        component={Recipient}
+        options={{
+          title: "Hello",
+          headerShown: false,
+        }}
       />
       <Tab.Screen
         name="Profile"
