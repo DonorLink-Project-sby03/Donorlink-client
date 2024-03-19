@@ -3,15 +3,20 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ProgressBar } from 'react-native-paper';
-let donation = 1
 export default function CardChat({ data }) {
   const navigation = useNavigation();
   useEffect(() => {
     data;
   }, []);
   console.log(data, 'data<<<<');
-  
+  let donation = 0
+  data.Donors.forEach(donor => {
+    if (donor.DonorConfirmation) { 
+      donation += donor.DonorConfirmation.stock;
+    }
+  });
   let total = (donation / data.stock ) * 100
+  
   // Menghitung persentase donasi masuk
   return (
     <View style={styles.cardContainer}>
