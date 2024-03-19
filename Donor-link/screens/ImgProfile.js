@@ -76,8 +76,7 @@ export default function ImgProfile() {
         });
 
         fetchNewProfile()
-        navigation.navigate('MainTabs')
-        console.log('result', res);
+        navigation.navigate('Profile')
         if (res.status == 200) {
           Alert.alert('Info', "Success upload profile");
         }
