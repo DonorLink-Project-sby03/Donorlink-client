@@ -1,19 +1,19 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useContext, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, PermissionsAndroid, Alert } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, PermissionsAndroid, Alert, TextInput } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { TextInput } from 'react-native';
 import axios from '../instance/config';
 import * as SecureStore from 'expo-secure-store';
 import { AuthContext } from '../context/authContext';
+import Loading from '../components/Loading';
 
 export default function ImgRecipient() {
   const { params } = useRoute();
   const navigation = useNavigation();
   const token = SecureStore.getItem('access_token');
   const [singleFile, setSingleFile] = useState(null);
-  const { setItems } = useContext(AuthContext);
+  const { setItems, isLoading, setIsLoading } = useContext(AuthContext);
 
   const checkPermissions = async () => {
     try {
@@ -61,6 +61,7 @@ export default function ImgRecipient() {
       });
 
       try {
+        setIsLoading(true);
         let res = await axios.patch('/recipients/' + params.postId, data, {
           headers: {
             Accept: 'application/json',
@@ -79,6 +80,8 @@ export default function ImgRecipient() {
         // Error retrieving data
         // Alert.alert('Error', error.message);
         console.log('error upload', error);
+      } finally {
+        setIsLoading(false);
       }
     } else {
       // If no file selected the show alert
@@ -110,37 +113,22 @@ export default function ImgRecipient() {
     }
   }
   return (
-    <SafeAreaView>
-      <View style={styles.mainBody}>
-        <View style={{ alignItems: 'center' }}>
-          <Text style={{ fontSize: 30, textAlign: 'center', marginTop: 20, marginBottom: 30 }}>
-            Silahkan Unggah Gambar
-          </Text>
-        </View>
-
-        {/* Tombol untuk memilih file */}
-        <TouchableOpacity style={styles.buttonStyle} activeOpacity={0.5} onPress={selectFile}>
-          <Text style={styles.buttonTextStyle}>Select File</Text>
-        </TouchableOpacity>
-
-        {/* Tombol untuk mengunggah file */}
-        <TouchableOpacity style={styles.buttonStyle} activeOpacity={0.5} onPress={uploadImage}>
-          <Text style={styles.buttonTextStyle}>Upload File</Text>
-        </TouchableOpacity>
-
-        {/* Input untuk menampilkan nama file terpilih */}
-        {singleFile && (
-          <View style={styles.containerInput}>
-            <Text style={styles.inputTitle}>Gambar:</Text>
-            <TextInput
-              onChangeText={(text) => setImage(text)}
-              value={singleFile ? singleFile.assets[0].name : ''}
-              style={styles.inputStyle}
-            />
-          </View>
-        )}
+    <View>
+      <View style={styles.containerInput}>
+        <Text style={styles.inputTitle}>Image</Text>
+        <TextInput onChangeText={(text) => setImage(text)} value={singleFile ? singleFile.assets[0].name : ''} style={styles.inputStyle} placeholder="Select file" />
       </View>
-    </SafeAreaView>
+
+      <TouchableOpacity style={styles.buttonStyle} activeOpacity={0.5} onPress={selectFile}>
+        <Text style={styles.buttonTextStyle}>Select File</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.buttonStyle} activeOpacity={0.5} onPress={uploadImage}>
+        <Text style={styles.buttonTextStyle}>Upload File</Text>
+      </TouchableOpacity>
+
+      {isLoading ? <Loading /> : null}
+    </View>
   );
 }
 
@@ -175,20 +163,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   inputStyle: {
-    width: '100%',
     height: 40,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
     paddingHorizontal: 10,
-    marginBottom: 10,
-    width: 365,
+    borderRadius: 10,
+    borderColor: 'gray',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    marginHorizontal: 15,
   },
   inputTitle: {
+    marginLeft: 15,
+    marginBottom: 5,
     fontSize: 18,
   },
   containerInput: {
-    marginBottom: 5,
+    marginBottom: 10,
   },
   dropdown: {
     borderWidth: 1,
