@@ -38,6 +38,7 @@ export default function AddForm() {
   const [bloodType, setBloodType] = useState("");
   const navigation = useNavigation();
   console.log(dob, '<<');
+  const { fetchUser } = useContext(AuthContext);
 
   const submitHandler = async () => {
     try {
@@ -61,6 +62,7 @@ export default function AddForm() {
           },
         }
       );
+      fetchUser()
       navigation.navigate("ImgProfile", {
         id: data.id,
       });
