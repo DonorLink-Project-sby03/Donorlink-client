@@ -22,7 +22,6 @@ export default function HomePages({ navigation }) {
   const { items } = useContext(AuthContext);
   const token = SecureStore.getItem('access_token');
   
-  console.log(dataSearch, "<<<Datasearch");
   const handlePress = async () => {
     console.log("Tekan");
     try {
@@ -33,7 +32,6 @@ export default function HomePages({ navigation }) {
       });
       setDataSearch(data);
     } catch (error) {
-      console.log("<<Masuk error");
       console.log(error);
     }
   }
