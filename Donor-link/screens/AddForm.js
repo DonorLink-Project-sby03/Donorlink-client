@@ -84,15 +84,15 @@ export default function AddForm() {
           <Text style={styles.label}>Jenis Kelamin:</Text>
           <View style={styles.radioContainer}>
             <RadioButton
-              value="male"
-              status={gender === "male" ? "checked" : "unchecked"}
-              onPress={() => setGender("male")}
+              value="Laki-laki"
+              status={gender === "Laki-laki" ? "checked" : "unchecked"}
+              onPress={() => setGender("Laki-laki")}
             />
             <Text style={styles.radioLabel}>Laki-laki</Text>
             <RadioButton
-              value="female"
-              status={gender === "female" ? "checked" : "unchecked"}
-              onPress={() => setGender("female")}
+              value="Perempuan"
+              status={gender === "Perempuan" ? "checked" : "unchecked"}
+              onPress={() => setGender("Perempuan")}
             />
             <Text style={styles.radioLabel}>Perempuan</Text>
           </View>

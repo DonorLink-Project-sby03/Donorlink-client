@@ -6,11 +6,11 @@ import HomePages from "../screens/Home";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ProfileScreen } from "../screens/ProfileScreen";
-import Recipient from "../screens/Recipient";
 import { FontAwesome } from "@expo/vector-icons";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import AddForm from "../screens/AddForm";
+import Recipient from "../screens/Recipient";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -22,13 +22,13 @@ export default function TabNavigator() {
         name="MainTabs"
         component={MainTabs}
         options={{ headerShown: false }}
-        />
+      />
     </Stack.Navigator>
   );
 }
 
 function MainTabs() {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -40,10 +40,12 @@ function MainTabs() {
           } else if (route.name === "Profile") {
             iconName = focused ? "user-circle-o" : "user-circle";
             return <FontAwesome name={iconName} size={30} color={"#F75369"} />;
-          } else if (route.name === "AddForm") {
+          } else if (route.name === "Recipents") {
             iconName = focused ? "add-circle" : "add-circle-outline";
-            return <MaterialIcons name={iconName} size={30} color={"#F75369"} />;
-          } 
+            return (
+              <MaterialIcons name={iconName} size={30} color={"#F75369"} />
+            );
+          }
         },
       })}
       tabBarOptions={{
@@ -56,35 +58,33 @@ function MainTabs() {
         options={() => ({
           title: "Home",
           headerStyle: {
-            backgroundColor: '#fbfbfb'
+            backgroundColor: "#fbfbfb",
           },
           headerShown: true,
         })}
       />
       <Tab.Screen
-        name="AddForm"
-        component={AddForm}
+        name="Recipents"
+        component={Recipient}
         options={{
           title: "Hello",
           headerShown: false,
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          title: "Hello",
-          headerShown: false,
-        }}
-      />
+  name="Profile"
+  component={ProfileScreen}
+  options={{
+    headerShown: true,
+    headerTitle: "Profile",
+    headerTitleStyle: {
+      color: '#F75369',
+      fontSize: 25
+    },
+    headerRight: () => <Entypo name="log-out" style={{ marginRight: 10, fontSize: 25, color: '#F75369' }}></Entypo>,
+  }}
+/>
+
     </Tab.Navigator>
   );
 }
-
-const HeaderTitle = () => {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text style={{ color: "#101820", fontSize: 25 }}>Xtweets</Text>
-    </View>
-  );
-};

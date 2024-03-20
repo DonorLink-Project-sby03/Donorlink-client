@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Button, StyleSheet, Text, View, PermissionsAndroid, Alert, TextInput } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import axios from '../instance/config';
 import * as DocumentPicker from 'expo-document-picker';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { AuthContext } from '../context/authContext';
 
 export default function ConfirmForm() {
   const { params } = useRoute();
@@ -13,6 +14,7 @@ export default function ConfirmForm() {
   const [donorConfirmId, setDonorConfirmId] = useState('');
   const [location, setLocation] = useState('');
   const token = SecureStore.getItem('access_token');
+  const {fetchRecipients} = useContext(AuthContext)
 
   const confirmDonor = async () => {
     const { data } = await axios.post(
@@ -26,6 +28,7 @@ export default function ConfirmForm() {
     );
     console.log(data.id, '<<< dari confirm donor');
     setDonorConfirmId(data.id);
+    fetchRecipients()
     navigation.navigate('ConfirmImg', {
       donorConfirmId: data.id,
     });
