@@ -5,7 +5,7 @@ export const AuthContext = createContext('');
 
 export default function AuthContextProvider({ children }) {
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [history, setHistory] = useState([]);
   const [items, setItems] = useState([]);
   const [users, setUsers] = useState({});
@@ -20,7 +20,6 @@ export default function AuthContextProvider({ children }) {
       }
     }
     getToken();
-    
   }, []);
 
   const fetchRecipients = async () => {
@@ -55,14 +54,11 @@ export default function AuthContextProvider({ children }) {
     }
   };
 
-
-  
-  useEffect(()=>{
+  useEffect(() => {
     fetchDonorByUsers();
     fetchRecipients();
     fetchUser();
-  },[])
+  }, []);
 
-
-  return <AuthContext.Provider value={{ isSignedIn, setIsSignedIn, items, setItems, history, setHistory, users, fetchUser, setUsers, fetchRecipients }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ isSignedIn, setIsSignedIn, isLoading, setIsLoading, items, setItems, history, setHistory, users, fetchUser, setUsers, fetchRecipients }}>{children}</AuthContext.Provider>;
 }
