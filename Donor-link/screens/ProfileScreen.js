@@ -65,7 +65,7 @@ export const ProfileScreen = () => {
             <View style={styles.outerCircle}>
               <View style={styles.overlay} />
               {users.Profile.imageUrl === null || users.Profile.imageUrl === "" ? (
-                 <Image source={require('../assets/user1.jpg ')} style={styles.imageStyle} />
+                 <Image source={require('../assets/user.png')} style={styles.imageStyle} />
                 ) : (
                   <Image source={{ uri: users?.Profile?.imageUrl }} style={styles.imageStyle} />
                 )}
