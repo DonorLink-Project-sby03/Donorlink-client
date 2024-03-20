@@ -31,15 +31,18 @@ export default function LoginScreen() {
         email,
         password,
       });
-      console.log(data.access_token);
       let token = await SecureStore.setItemAsync(
         "access_token",
         data.access_token
       );
       setIsSignedIn(true);
-      fetchUser()
+      fetchUser();
     } catch (error) {
       console.log(error);
+    } finally {
+      setTimeout(() => {
+        // Code to execute after 5 seconds
+      }, 5000);
     }
   };
   console.log(email);

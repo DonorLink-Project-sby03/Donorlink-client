@@ -22,40 +22,58 @@ import instance from "../instance/config";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { format } from "date-fns";
 
-export const ProfileScreen = () => {
-  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+export const LandingPage = () => {
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
 
   const copyToClipboard = (text) => {
     Clipboard.setString(text);
-    alert('Text copied to clipboard!');
+    alert("Text copied to clipboard!");
   };
 
   const navigation = useNavigation();
-  const { fetchUser, users, setIsSignedIn} = useContext(AuthContext);
-  console.log(users, 'users');
+  const { fetchUser, users, setIsSignedIn } = useContext(AuthContext);
+  console.log(users, "users");
   const handeLogout = async () => {
     try {
       await SecureStore.deleteItemAsync("access_token");
-      setIsSignedIn(false)
+      setIsSignedIn(false);
     } catch (error) {
       console.log(error);
     }
   };
   const handleAddProfile = async () => {
     try {
-      navigation.navigate('AddForm');
+      navigation.navigate("AddForm");
     } catch (error) {
       console.log(error);
     }
   };
   const createdAtDate = new Date(users?.createdAt);
   const testDate = new Date();
-  if (createdAtDate.getDate() === testDate.getDate() && createdAtDate.getMonth() === testDate.getMonth() && createdAtDate.getFullYear() === testDate.getFullYear()) {
-    const formattedDate = format(createdAtDate, 'dd MMM yyyy');
+  if (
+    createdAtDate.getDate() === testDate.getDate() &&
+    createdAtDate.getMonth() === testDate.getMonth() &&
+    createdAtDate.getFullYear() === testDate.getFullYear()
+  ) {
+    const formattedDate = format(createdAtDate, "dd MMM yyyy");
   }
   useEffect(() => {
     fetchUser();
   }, []);
+  console.log(users, "users Landing");
 
   return (
     <View style={{ backgroundColor: "white", flex: 1 }}>
@@ -64,27 +82,31 @@ export const ProfileScreen = () => {
           <View style={styles.rowContainer}>
             <View style={styles.outerCircle}>
               <View style={styles.overlay} />
-              {users?.Profile?.imageUrl === null || users.Profile.imageUrl === "" ? (
-                 <Image source={require('../assets/user.png')} style={styles.imageStyle} />
-                ) : (
-                  <Image source={{ uri: users?.Profile?.imageUrl }} style={styles.imageStyle} />
-                )}
+              {users?.Profile?.imageUrl === null ||
+              users?.Profile?.imageUrl === "" ||
+              users?.Profile?.imageUrl === undefined ? (
+                <Image
+                  source={require("../assets/user.png")}
+                  style={styles.imageStyle}
+                />
+              ) : (
+                <Image
+                  source={{ uri: users?.Profile?.imageUrl }}
+                  style={styles.imageStyle}
+                />
+              )}
             </View>
-            {users?.name.split(" ").length === 1 ? (
-              <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-                {users?.name}
-              </Text>
-            ) : (
-              <View>
-                <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-                  {users?.name.split(" ")[0] || users?.name.split(" ")[0]}
-                </Text>
-                <Text style={{ fontSize: 25 }}>
-                  {users?.name.split(" ").slice(1).join(" ") ||
-                    users.name.split(" ").slice(1).join(" ")}
-                </Text>
-              </View>
-            )}
+            <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+              {users?.name?.includes(" ") ? (
+                <>
+                  {users.name.split(" ").slice(0, -2).join(" ")}
+                  {"\n"}
+                  {users.name.split(" ").slice(-2).join(" ")}
+                </>
+              ) : (
+                users?.name
+              )}
+            </Text>
           </View>
           <View style={{ marginTop: 16, paddingBottom: 10 }}>
             <View
@@ -105,9 +127,13 @@ export const ProfileScreen = () => {
                     alignItems: "center",
                   }}
                 >
-                  <Text style={styles.pribadiRight}>{users?.Profile?.identityNumber} </Text>
+                  <Text style={styles.pribadiRight}>
+                    {users?.Profile?.identityNumber}{" "}
+                  </Text>
                   <TouchableOpacity
-                    onPress={() => copyToClipboard(users?.Profile?.identityNumber)}
+                    onPress={() =>
+                      copyToClipboard(users?.Profile?.identityNumber)
+                    }
                   >
                     <FontAwesome6 name="copy" size={24} color="#F75369" />
                   </TouchableOpacity>
@@ -115,11 +141,15 @@ export const ProfileScreen = () => {
               </View>
               <View style={styles.data}>
                 <Text style={styles.pribadi}>Gender</Text>
-                <Text style={styles.pribadiRight}>{users?.Profile?.gender}</Text>
+                <Text style={styles.pribadiRight}>
+                  {users?.Profile?.gender}
+                </Text>
               </View>
               <View style={styles.data}>
                 <Text style={styles.pribadi}>Alamat</Text>
-                <Text style={styles.pribadiRight}>{users?.Profile?.address}</Text>
+                <Text style={styles.pribadiRight}>
+                  {users?.Profile?.address}
+                </Text>
               </View>
               <View style={styles.data}>
                 <Text style={styles.pribadi}>Pekerjaan</Text>
@@ -127,11 +157,15 @@ export const ProfileScreen = () => {
               </View>
               <View style={styles.data}>
                 <Text style={styles.pribadi}>No Telephone</Text>
-                <Text style={styles.pribadiRight}>{users?.Profile?.phoneNumber}</Text>
+                <Text style={styles.pribadiRight}>
+                  {users?.Profile?.phoneNumber}
+                </Text>
               </View>
               <View style={styles.data}>
                 <Text style={styles.pribadi}>Golongan Darah</Text>
-                <Text style={styles.pribadiRight}>{users?.Profile?.bloodType}</Text>
+                <Text style={styles.pribadiRight}>
+                  {users?.Profile?.bloodType}
+                </Text>
               </View>
               <View style={styles.data}>
                 <Text style={styles.pribadi}>Dibuat pada</Text>
@@ -153,7 +187,9 @@ export const ProfileScreen = () => {
                     paddingHorizontal: 10,
                   }}
                 >
-                  <Text style={{ fontSize: 23, color: "white", paddingBottom: 10 }}>
+                  <Text
+                    style={{ fontSize: 23, color: "white", paddingBottom: 10 }}
+                  >
                     Logout
                   </Text>
                 </View>
@@ -162,65 +198,65 @@ export const ProfileScreen = () => {
           </View>
         </>
       ) : (
-        <View style={{flex: 1, justifyContent: 'center'}}>
-        <TouchableOpacity onPress={handleAddProfile}>
-        <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              marginHorizontal: 15,
-              backgroundColor: "#F75369",
-              marginVertical: 10,
-              borderRadius: 10,
-              paddingHorizontal: 10,
-            }}
-          >
-            <Text style={{ fontSize: 23, color: "white", paddingBottom: 10 }}>
-              Add Profile
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handeLogout}>
-        <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              marginHorizontal: 15,
-              backgroundColor: "#F75369",
-              marginVertical: 10,
-              borderRadius: 10,
-              paddingHorizontal: 10,
-            }}
-          >
-            <Text style={{ fontSize: 23, color: "white", paddingBottom: 10 }}>
-              Logout
-            </Text>
-          </View>
-        </TouchableOpacity>
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <TouchableOpacity onPress={handleAddProfile}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                marginHorizontal: 15,
+                backgroundColor: "#F75369",
+                marginVertical: 10,
+                borderRadius: 10,
+                paddingHorizontal: 10,
+              }}
+            >
+              <Text style={{ fontSize: 23, color: "white", paddingBottom: 10 }}>
+                Add Profile
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handeLogout}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                marginHorizontal: 15,
+                backgroundColor: "#F75369",
+                marginVertical: 10,
+                borderRadius: 10,
+                paddingHorizontal: 10,
+              }}
+            >
+              <Text style={{ fontSize: 23, color: "white", paddingBottom: 10 }}>
+                Logout
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
       )}
     </View>
-  );  
+  );
 };
 
 const styles = StyleSheet.create({
   rowContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     marginTop: 30,
   },
   row: {
-    flexDirection: 'row',
-    justifyContent: 'space-betweens',
-    backgroundColor: '#efecec',
+    flexDirection: "row",
+    justifyContent: "space-betweens",
+    backgroundColor: "#efecec",
     paddingHorizontal: 15,
   },
   imageStyle: {
     width: 78,
     height: 78,
     borderRadius: 50,
-    color: 'white',
-    backgroundColor: 'white'
+    color: "white",
+    backgroundColor: "white",
   },
   data: {
     flexDirection: "row",
@@ -233,12 +269,12 @@ const styles = StyleSheet.create({
   },
   pribadi: {
     fontSize: 23,
-    color: 'grey',
+    color: "grey",
     paddingBottom: 10,
   },
   pribadiRight: {
     fontSize: 24,
-    color: 'black',
+    color: "black",
     paddingBottom: 10,
   },
   outerCircle: {
@@ -251,13 +287,13 @@ const styles = StyleSheet.create({
     borderColor: "#F75369", // Warna garis lingkaran
   },
   overlay: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 20,
     right: 20,
-    width: '100%', // Bagian kiri atas akan berubah warna
-    height: '100%', // Bagian kiri atas akan berubah warna
-    backgroundColor: '#F75369', // Warna overlay
-    overflow: 'hidden',
-    alignItems: 'center',
+    width: "100%", // Bagian kiri atas akan berubah warna
+    height: "100%", // Bagian kiri atas akan berubah warna
+    backgroundColor: "#F75369", // Warna overlay
+    overflow: "hidden",
+    alignItems: "center",
   },
 });
