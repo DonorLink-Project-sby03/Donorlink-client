@@ -64,5 +64,6 @@ export default function AuthContextProvider({ children }) {
     fetchUser();
   },[])
 
-  return <AuthContext.Provider value={{ isSignedIn, setIsSignedIn, items, setItems, history, setHistory, users, fetchUser, setUsers }}>{children}</AuthContext.Provider>;
+
+  return <AuthContext.Provider value={{ isSignedIn, setIsSignedIn, items, setItems, history, setHistory, users, fetchUser, setUsers, fetchRecipients }}>{children}</AuthContext.Provider>;
 }
