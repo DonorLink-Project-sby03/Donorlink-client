@@ -123,7 +123,7 @@ export default function ImgProfile() {
   }
 
   if(getLoading){
-    return <View>
+    return <View style={{flex:1 ,justifyContent:'center', alignItems:'center'}}>
       <Loading/>
     </View>
   }
