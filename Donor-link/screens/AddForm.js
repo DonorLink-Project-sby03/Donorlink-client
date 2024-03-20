@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -15,6 +15,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
 import DatePicker from "react-native-modern-datepicker";
 import { Dropdown } from "react-native-element-dropdown";
+import { AuthContext } from "../context/authContext";
 
 const typeBlood = [
     { key: '1', value: 'O+' },

@@ -107,9 +107,9 @@ export const LandingPage = () => {
           <Text style={{ fontSize: 25, fontWeight: "bold" }}>
             {users?.name?.includes(" ") ? (
               <>
-                {users.name.split(" ").slice(0, -2).join(" ")}
+                {users.name.split(" ").slice(0, 1).join(" ")}
                 {"\n"}
-                {users.name.split(" ").slice(-2).join(" ")}
+                {users.name.split(" ").slice(1).join(" ")}
               </>
             ) : (
               users?.name
