@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Button, StyleSheet, Text, View, PermissionsAndroid, Alert, TextInput } from 'react-native';
+import { Button, StyleSheet, Text, View, Alert, TextInput } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import axios from '../instance/config';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -26,7 +26,7 @@ export default function ConfirmForm() {
           },
         }
       );
-      console.log(data.id, '<<< dari confirm donor');
+      // console.log(data.id, '<<< dari confirm donor');
       setDonorConfirmId(data.id);
       fetchRecipients()
       navigation.navigate('ConfirmImg', {

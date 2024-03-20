@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useContext, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, PermissionsAndroid, Alert, TextInput } from 'react-native';
+import { StyleSheet, Text, View, PermissionsAndroid, Alert, TextInput } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import axios from '../instance/config';
