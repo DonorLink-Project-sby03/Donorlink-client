@@ -17,6 +17,7 @@ export default function Detail() {
   const [stock, setStock] = useState('');
   const [profile, setProfile] = useState({});
   const [location, setLocation] = useState(null);
+  const { fetchDonorByUsers } = useContext(AuthContext)
   // const [getCurrentLocation, setGetCurrentLocation] = useState({});
 
   const [draggableMarkerCoor, setDraggableMarkerCoor] = useState({
@@ -89,6 +90,7 @@ export default function Detail() {
           }
         );
         navigation.navigate('History');
+        fetchDonorByUsers()
       } catch (error) {
         console.log(error);
         Alert.alert('NotAcceptable', 'Sorry your blood type is not suitable for donation.');
