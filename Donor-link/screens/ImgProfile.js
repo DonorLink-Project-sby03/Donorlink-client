@@ -8,6 +8,7 @@ import axios from '../instance/config';
 import * as SecureStore from 'expo-secure-store';
 import instance from '../instance/config';
 import { AuthContext } from '../context/authContext';
+import Loading from '../components/Loading';
 
 export default function ImgProfile() {
   const { params } = useRoute();
@@ -15,11 +16,12 @@ export default function ImgProfile() {
   const [singleFile, setSingleFile] = useState(null);
   const navigation = useNavigation()
   const { setUsers } = useContext(AuthContext);
+  const [getLoading,setLoading] = useState(false)
 
 
   const checkPermissions = async () => {
     try {
-      console.log("masuk");
+      setLoading(true)
       const result = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
       if (!result) {
         const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, {
@@ -43,6 +45,8 @@ export default function ImgProfile() {
     } catch (error) {
       console.log(error, 'error');
       return false;
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -67,6 +71,7 @@ export default function ImgProfile() {
       });
 
       try {
+        setLoading(true)
         let res = await instance.patch('/profile/' + params.id, data, {
           headers: {
             Accept: 'application/json',
@@ -84,6 +89,8 @@ export default function ImgProfile() {
         // Error retrieving data
         // Alert.alert('Error', error.message);
         console.log('error upload', error);
+      } finally {
+        setLoading(false)
       }
     } else {
       // If no file selected the show alert
@@ -113,6 +120,12 @@ export default function ImgProfile() {
       console.warn(err);
       return false;
     }
+  }
+
+  if(getLoading){
+    return <View>
+      <Loading/>
+    </View>
   }
   
   return (
