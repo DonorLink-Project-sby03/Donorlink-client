@@ -81,7 +81,6 @@ function MainTabs() {
       color: '#F75369',
       fontSize: 25
     },
-    headerRight: () => <Entypo name="log-out" style={{ marginRight: 10, fontSize: 25, color: '#F75369' }}></Entypo>,
   }}
 />
 

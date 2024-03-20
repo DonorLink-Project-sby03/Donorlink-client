@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ProgressBar } from "react-native-paper";
-
+ 
 export default function CardChat({ data }) {
   const navigation = useNavigation();
   useEffect(() => {

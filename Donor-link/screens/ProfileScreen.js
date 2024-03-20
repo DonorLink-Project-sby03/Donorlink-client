@@ -20,6 +20,7 @@ import { useContext, useEffect, useState } from "react";
 import * as Progress from "react-native-progress";
 import instance from "../instance/config";
 import { FontAwesome6 } from "@expo/vector-icons";
+import { format } from "date-fns";
 
 export const ProfileScreen = () => {
   const monthNames = [
@@ -105,9 +106,7 @@ export const ProfileScreen = () => {
       console.log(error);
     }
   };
-  console.log(user, "profile");
-  console.log(users, "profile juga");
-  const createdAtDate = new Date(data.createdAt);
+  const createdAtDate = new Date(user.createdAt);
   const testDate = new Date();
   if (
     createdAtDate.getDate() === testDate.getDate() &&
@@ -119,81 +118,146 @@ export const ProfileScreen = () => {
   }
 
   return (
-    <View style={{ backgroundColor: "white" }}>
-      <View style={styles.rowContainer}>
-      <View style={styles.outerCircle}>
-    <Image source={{ uri: data?.imageUrl }} style={styles.imageStyle} />
-  </View>
-        {data.User?.name.split(" ").length === 1 ||
-        users?.name.split(" ").length === 1 ? (
-          <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-            {users?.name || data?.User.name}
-          </Text>
-        ) : (
-          <View>
-            <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-              {data?.User?.name.split(" ")[0] || users?.name.split(" ")[0]}
-            </Text>
-            <Text style={{ fontSize: 25 }}>
-              {data?.User?.name.split(" ").slice(1).join(" ") ||
-                users.name.split(" ").slice(1).join(" ")}
-            </Text>
+    <View style={{ backgroundColor: "white", flex: 1 }}>
+      {data ? (
+        <>
+          <View style={styles.rowContainer}>
+            <View style={styles.outerCircle}>
+              <View style={styles.overlay} />
+              <Image source={{ uri: data?.imageUrl }} style={styles.imageStyle} />
+            </View>
+            {data.User?.name.split(" ").length === 1 ||
+            users?.name.split(" ").length === 1 ? (
+              <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+                {users?.name || data?.User.name}
+              </Text>
+            ) : (
+              <View>
+                <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+                  {data?.User?.name.split(" ")[0] || users?.name.split(" ")[0]}
+                </Text>
+                <Text style={{ fontSize: 25 }}>
+                  {data?.User?.name.split(" ").slice(1).join(" ") ||
+                    users.name.split(" ").slice(1).join(" ")}
+                </Text>
+              </View>
+            )}
           </View>
-        )}
-      </View>
-      <View>
-        <View style={{ marginTop: 20 }}>
-          <View style={styles.row}>
-            <Text style={styles.pribadi}>Data Pribadi</Text>
-          </View>
-          <View style={styles.data}>
-            <Text style={styles.pribadi}>No Identitas</Text>
+          <View style={{ marginTop: 16, paddingBottom: 10 }}>
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
+                height: 3,
+                backgroundColor: "#F75369",
+                alignSelf: "stretch",
+                marginBottom: 15,
               }}
-            >
-              <Text style={styles.pribadiRight}>{data?.identityNumber} </Text>
-              <TouchableOpacity
-                onPress={() => copyToClipboard(data?.identityNumber)}
-              >
-                <FontAwesome6 name="copy" size={24} color="#F75369" />
+            />
+            <View>
+              <View style={styles.data}>
+                <Text style={styles.pribadi}>No Identitas</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text style={styles.pribadiRight}>{data?.identityNumber} </Text>
+                  <TouchableOpacity
+                    onPress={() => copyToClipboard(data?.identityNumber)}
+                  >
+                    <FontAwesome6 name="copy" size={24} color="#F75369" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={styles.data}>
+                <Text style={styles.pribadi}>Gender</Text>
+                <Text style={styles.pribadiRight}>{data?.gender}</Text>
+              </View>
+              <View style={styles.data}>
+                <Text style={styles.pribadi}>Alamat</Text>
+                <Text style={styles.pribadiRight}>{data?.address}</Text>
+              </View>
+              <View style={styles.data}>
+                <Text style={styles.pribadi}>Pekerjaan</Text>
+                <Text style={styles.pribadiRight}>{data?.job}</Text>
+              </View>
+              <View style={styles.data}>
+                <Text style={styles.pribadi}>No Telephone</Text>
+                <Text style={styles.pribadiRight}>{data?.phoneNumber}</Text>
+              </View>
+              <View style={styles.data}>
+                <Text style={styles.pribadi}>Golongan Darah</Text>
+                <Text style={styles.pribadiRight}>{data?.bloodType}</Text>
+              </View>
+              <View style={styles.data}>
+                <Text style={styles.pribadi}>Dibuat pada</Text>
+                <Text style={styles.pribadiRight}>
+                  {createdAtDate.getDate()}{" "}
+                  {monthNames[createdAtDate.getMonth()]}{" "}
+                  {createdAtDate.getFullYear()}
+                </Text>
+              </View>
+              <TouchableOpacity onPress={handeLogout}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    marginHorizontal: 15,
+                    backgroundColor: "#F75369",
+                    marginVertical: 7,
+                    borderRadius: 10,
+                    paddingHorizontal: 10,
+                  }}
+                >
+                  <Text style={{ fontSize: 23, color: "white", paddingBottom: 10 }}>
+                    Logout
+                  </Text>
+                </View>
               </TouchableOpacity>
             </View>
           </View>
-          <View style={styles.data}>
-            <Text style={styles.pribadi}>Gender</Text>
-            <Text style={styles.pribadiRight}>{data?.gender}</Text>
-          </View>
-          <View style={styles.data}>
-            <Text style={styles.pribadi}>Alamat</Text>
-            <Text style={styles.pribadiRight}>{data?.address}</Text>
-          </View>
-          <View style={styles.data}>
-            <Text style={styles.pribadi}>Pekerjaan</Text>
-            <Text style={styles.pribadiRight}>{data?.job}</Text>
-          </View>
-          <View style={styles.data}>
-            <Text style={styles.pribadi}>No Telephone</Text>
-            <Text style={styles.pribadiRight}>{data?.phoneNumber}</Text>
-          </View>
-          <View style={styles.data}>
-            <Text style={styles.pribadi}>Golongan Darah</Text>
-            <Text style={styles.pribadiRight}>{data?.bloodType}</Text>
-          </View>
-          <View style={styles.data}>
-            <Text style={styles.pribadi}>Dibuat pada</Text>
-            <Text style={styles.pribadiRight}>
-              {createdAtDate.getDate()} {monthNames[createdAtDate.getMonth()]}{" "}
-              {createdAtDate.getFullYear()}
+        </>
+      ) : (
+        <View style={{flex: 1, justifyContent: 'center'}}>
+        <TouchableOpacity onPress={handleAddProfile}>
+        <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              marginHorizontal: 15,
+              backgroundColor: "#F75369",
+              marginVertical: 10,
+              borderRadius: 10,
+              paddingHorizontal: 10,
+            }}
+          >
+            <Text style={{ fontSize: 23, color: "white", paddingBottom: 10 }}>
+              Add Profile
             </Text>
           </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleAddProfile}>
+        <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              marginHorizontal: 15,
+              backgroundColor: "#F75369",
+              marginVertical: 10,
+              borderRadius: 10,
+              paddingHorizontal: 10,
+            }}
+          >
+            <Text style={{ fontSize: 23, color: "white", paddingBottom: 10 }}>
+              Logout
+            </Text>
+          </View>
+        </TouchableOpacity>
         </View>
-      </View>
+      )}
     </View>
-  );
+  );  
 };
 
 const styles = StyleSheet.create({
@@ -201,7 +265,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     marginTop: 30,
-    paddingHorizontal: 40,
   },
   row: {
     flexDirection: "row",
@@ -217,7 +280,11 @@ const styles = StyleSheet.create({
   data: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 15,
+    marginHorizontal: 15,
+    backgroundColor: "#f5f5f5",
+    marginVertical: 7,
+    borderRadius: 10,
+    paddingHorizontal: 10,
   },
   pribadi: {
     fontSize: 23,
@@ -237,8 +304,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderColor: "#F75369", // Warna garis lingkaran
-    borderWidth: 5, // Lebar garis lingkaran
-    borderBottomColor: "black", // Warna garis lingkaran bagian bawah
-    borderBottomWidth: 1, // Lebar garis lingkaran bagian bawah
+  },
+  overlay: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    width: '100%', // Bagian kiri atas akan berubah warna
+    height: '100%', // Bagian kiri atas akan berubah warna
+    backgroundColor: '#F75369', // Warna overlay
+    overflow: 'hidden',
+    alignItems: 'center',
   },
 });
