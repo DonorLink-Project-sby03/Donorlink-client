@@ -12,6 +12,7 @@ import { AuthContext } from "../context/authContext";
 import { useContext, useEffect } from "react";
 import { FontAwesome6 } from "@expo/vector-icons";
 import {format} from 'date-fns'
+import * as SecureStore from "expo-secure-store";
 
 export const ProfileScreen = () => {
   const monthNames = [
@@ -28,6 +29,7 @@ export const ProfileScreen = () => {
     "Nov",
     "Dec",
   ];
+  const { setIsSignedIn } = useContext(AuthContext);
 
   const copyToClipboard = (text) => {
     Clipboard.setString(text);
@@ -36,6 +38,15 @@ export const ProfileScreen = () => {
 
   const navigation = useNavigation();
   const { fetchUser, users } = useContext(AuthContext);
+
+  const handeLogout = async () => {
+    try {
+      await SecureStore.deleteItemAsync("access_token");
+      setIsSignedIn(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleAddProfile = async () => {
     try {
@@ -62,112 +73,144 @@ export const ProfileScreen = () => {
   },[])
 
   return (
-    <View>
-      {users.Profile ?
-    <View style={{ backgroundColor: "white" }}>
-      <View style={styles.rowContainer}>
-      <View style={styles.outerCircle}>
-    <Image source={{ uri: users.Profile.imageUrl }} style={styles.imageStyle} />
-  </View>
-        {users?.name.split(" ").length === 1 ? (
-          <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-            {users?.name}
-          </Text>
-        ) : (
-          <View>
-            <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-              {users?.name.split(" ")[0]}
-            </Text>
-            <Text style={{ fontSize: 25 }}>
-              {users.name.split(" ").slice(1).join(" ")}
-            </Text>
+    <View style={{ backgroundColor: "white", flex: 1 }}>
+      {users.Profile ? (
+        <>
+          <View style={styles.rowContainer}>
+            <View style={styles.outerCircle}>
+              <View style={styles.overlay} />
+              <Image source={{ uri: users?.Profile?.imageUrl }} style={styles.imageStyle} />
+            </View>
+            {users?.name.split(" ").length === 1 ? (
+              <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+                {users?.name}
+              </Text>
+            ) : (
+              <View>
+                <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+                  {users?.name.split(" ")[0]}
+                </Text>
+                <Text style={{ fontSize: 25 }}>
+                  {users.name.split(" ").slice(1).join(" ")}
+                </Text>
+              </View>
+            )}
           </View>
-        )}
-      </View>
-      <View>
-        <View style={{ marginTop: 20 }}>
-          <View style={styles.row}>
-            <Text style={styles.pribadi}>Data Pribadi</Text>
-          </View>
-          <View style={styles.data}>
-            <Text style={styles.pribadi}>No Identitas</Text>
+          <View style={{ marginTop: 16, paddingBottom: 10 }}>
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
+                height: 3,
+                backgroundColor: "#F75369",
+                alignSelf: "stretch",
+                marginBottom: 15,
               }}
-            >
-              <Text style={styles.pribadiRight}>{users.Profile?.identityNumber} </Text>
-              <TouchableOpacity
-                onPress={() => copyToClipboard(users.Profile?.identityNumber)}
-              >
-                <FontAwesome6 name="copy" size={24} color="#F75369" />
+            />
+            <View>
+              <View style={styles.data}>
+                <Text style={styles.pribadi}>No Identitas</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text style={styles.pribadiRight}>{users?.Profile?.identityNumber} </Text>
+                  <TouchableOpacity
+                    onPress={() => copyToClipboard(users?.Profile?.identityNumber)}
+                  >
+                    <FontAwesome6 name="copy" size={24} color="#F75369" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={styles.data}>
+                <Text style={styles.pribadi}>Gender</Text>
+                <Text style={styles.pribadiRight}>{users?.Profile?.gender}</Text>
+              </View>
+              <View style={styles.data}>
+                <Text style={styles.pribadi}>Alamat</Text>
+                <Text style={styles.pribadiRight}>{users?.Profile?.address}</Text>
+              </View>
+              <View style={styles.data}>
+                <Text style={styles.pribadi}>Pekerjaan</Text>
+                <Text style={styles.pribadiRight}>{users?.Profile?.job}</Text>
+              </View>
+              <View style={styles.data}>
+                <Text style={styles.pribadi}>No Telephone</Text>
+                <Text style={styles.pribadiRight}>{users?.Profile?.phoneNumber}</Text>
+              </View>
+              <View style={styles.data}>
+                <Text style={styles.pribadi}>Golongan Darah</Text>
+                <Text style={styles.pribadiRight}>{users?.Profile?.bloodType}</Text>
+              </View>
+              <View style={styles.data}>
+                <Text style={styles.pribadi}>Dibuat pada</Text>
+                <Text style={styles.pribadiRight}>
+                  {createdAtDate.getDate()}{" "}
+                  {monthNames[createdAtDate.getMonth()]}{" "}
+                  {createdAtDate.getFullYear()}
+                </Text>
+              </View>
+              <TouchableOpacity onPress={handeLogout}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    marginHorizontal: 15,
+                    backgroundColor: "#F75369",
+                    marginVertical: 7,
+                    borderRadius: 10,
+                    paddingHorizontal: 10,
+                  }}
+                >
+                  <Text style={{ fontSize: 23, color: "white", paddingBottom: 10 }}>
+                    Logout
+                  </Text>
+                </View>
               </TouchableOpacity>
             </View>
           </View>
-          <View style={styles.data}>
-            <Text style={styles.pribadi}>Gender</Text>
-            <Text style={styles.pribadiRight}>{users.Profile?.gender}</Text>
-          </View>
-          <View style={styles.data}>
-            <Text style={styles.pribadi}>Alamat</Text>
-            <Text style={styles.pribadiRight}>{users.Profile?.address}</Text>
-          </View>
-          <View style={styles.data}>
-            <Text style={styles.pribadi}>Pekerjaan</Text>
-            <Text style={styles.pribadiRight}>{users.Profile?.job}</Text>
-          </View>
-          <View style={styles.data}>
-            <Text style={styles.pribadi}>No Telephone</Text>
-            <Text style={styles.pribadiRight}>{users.Profile?.phoneNumber}</Text>
-          </View>
-          <View style={styles.data}>
-            <Text style={styles.pribadi}>Golongan Darah</Text>
-            <Text style={styles.pribadiRight}>{users.Profile?.bloodType}</Text>
-          </View>
-          <View style={styles.data}>
-            <Text style={styles.pribadi}>Dibuat pada</Text>
-            <Text style={styles.pribadiRight}>
-              {createdAtDate.getDate()} {monthNames[createdAtDate.getMonth()]}{" "}
-              {createdAtDate.getFullYear()}
+        </>
+      ) : (
+        <View style={{flex: 1, justifyContent: 'center'}}>
+        <TouchableOpacity onPress={handleAddProfile}>
+        <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              marginHorizontal: 15,
+              backgroundColor: "#F75369",
+              marginVertical: 10,
+              borderRadius: 10,
+              paddingHorizontal: 10,
+            }}
+          >
+            <Text style={{ fontSize: 23, color: "white", paddingBottom: 10 }}>
+              Add Profile
             </Text>
           </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handeLogout}>
+        <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              marginHorizontal: 15,
+              backgroundColor: "#F75369",
+              marginVertical: 10,
+              borderRadius: 10,
+              paddingHorizontal: 10,
+            }}
+          >
+            <Text style={{ fontSize: 23, color: "white", paddingBottom: 10 }}>
+              Logout
+            </Text>
+          </View>
+        </TouchableOpacity>
         </View>
-      </View>
+      )}
     </View>
-    : 
-    <View style={{ backgroundColor: "white", flexDirection:'column' }}>
-      <View style={styles.rowContainer}>
-      <View style={styles.outerCircle}>
-        <Image source={{ uri:"https://th.bing.com/th/id/OIP.xo-BCC1ZKFpLL65D93eHcgHaGe?rs=1&pid=ImgDetMain" }} style={styles.imageStyle} />
-      </View>
-        {users?.name.split(" ").length === 1 ? (
-          <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-            {users?.name}
-          </Text>
-        ) : (
-          <View>
-            <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-              {users?.name.split(" ")[0]}
-            </Text>
-            <Text style={{ fontSize: 25 }}>
-              {users.name.split(" ").slice(1).join(" ")}
-            </Text>
-          </View>
-        )}
-      </View>
-      {/* unt button and name user */}
-      <View>
-        <Text style={{ fontSize: 17 }}>
-          Hello {users.username} please add profile information!
-        </Text>
-        <Button title="Add Profile" onPress={handleAddProfile} />
-      </View>
-    </View>
-      }
-    </View>
-  );
+  );  
 };
 
 const styles = StyleSheet.create({
@@ -175,7 +218,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     marginTop: 30,
-    paddingHorizontal: 40,
   },
   row: {
     flexDirection: "row",
@@ -191,7 +233,11 @@ const styles = StyleSheet.create({
   data: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 15,
+    marginHorizontal: 15,
+    backgroundColor: "#f5f5f5",
+    marginVertical: 7,
+    borderRadius: 10,
+    paddingHorizontal: 10,
   },
   pribadi: {
     fontSize: 23,
@@ -211,8 +257,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderColor: "#F75369", // Warna garis lingkaran
-    borderWidth: 5, // Lebar garis lingkaran
-    borderBottomColor: "black", // Warna garis lingkaran bagian bawah
-    borderBottomWidth: 1, // Lebar garis lingkaran bagian bawah
+  },
+  overlay: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    width: '100%', // Bagian kiri atas akan berubah warna
+    height: '100%', // Bagian kiri atas akan berubah warna
+    backgroundColor: '#F75369', // Warna overlay
+    overflow: 'hidden',
+    alignItems: 'center',
   },
 });
