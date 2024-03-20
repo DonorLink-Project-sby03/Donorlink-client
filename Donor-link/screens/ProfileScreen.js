@@ -1,25 +1,18 @@
 import {
   Button,
   Image,
-  ImageBackground,
-  StatusBar,
   Text,
   TouchableOpacity,
   View,
   StyleSheet,
   Clipboard,
 } from "react-native";
-import { Foundation } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
 import * as SecureStore from "expo-secure-store";
-import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/authContext";
-import { useContext, useEffect, useState } from "react";
-import * as Progress from "react-native-progress";
-import instance from "../instance/config";
+import { useContext, useEffect } from "react";
 import { FontAwesome6 } from "@expo/vector-icons";
+import {format} from 'date-fns'
 
 export const ProfileScreen = () => {
   const monthNames = [
@@ -42,10 +35,6 @@ export const ProfileScreen = () => {
     alert("Text copied to clipboard!");
   };
 
-  const { users } = useContext(AuthContext);
-  const [data, setData] = useState("");
-  const [user, setUser] = useState("");
-
   const navigation = useNavigation();
   const { fetchUser, users } = useContext(AuthContext);
 
@@ -66,9 +55,9 @@ export const ProfileScreen = () => {
       console.log(error);
     }
   };
-  console.log(user, "profile");
-  console.log(users, "profile juga");
-  const createdAtDate = new Date(data.createdAt);
+  
+  // console.log(users.Profile.createdAt, "profile juga");
+  const createdAtDate = new Date(users?.Profile?.createdAt);
   const testDate = new Date();
   if (
     createdAtDate.getDate() === testDate.getDate() &&
@@ -79,25 +68,29 @@ export const ProfileScreen = () => {
     const formattedDate = format(createdAtDate, "dd MMM yyyy");
   }
 
+  useEffect(()=>{
+    fetchUser()
+  },[])
+
   return (
+    <View>
+      {users.Profile ?
     <View style={{ backgroundColor: "white" }}>
       <View style={styles.rowContainer}>
       <View style={styles.outerCircle}>
-    <Image source={{ uri: data?.imageUrl }} style={styles.imageStyle} />
+    <Image source={{ uri: users.Profile.imageUrl }} style={styles.imageStyle} />
   </View>
-        {data.User?.name.split(" ").length === 1 ||
-        users?.name.split(" ").length === 1 ? (
+        {users?.name.split(" ").length === 1 ? (
           <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-            {users?.name || data?.User.name}
+            {users?.name}
           </Text>
         ) : (
           <View>
             <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-              {data?.User?.name.split(" ")[0] || users?.name.split(" ")[0]}
+              {users?.name.split(" ")[0]}
             </Text>
             <Text style={{ fontSize: 25 }}>
-              {data?.User?.name.split(" ").slice(1).join(" ") ||
-                users.name.split(" ").slice(1).join(" ")}
+              {users.name.split(" ").slice(1).join(" ")}
             </Text>
           </View>
         )}
@@ -116,9 +109,9 @@ export const ProfileScreen = () => {
                 alignItems: "center",
               }}
             >
-              <Text style={styles.pribadiRight}>{data?.identityNumber} </Text>
+              <Text style={styles.pribadiRight}>{users.Profile?.identityNumber} </Text>
               <TouchableOpacity
-                onPress={() => copyToClipboard(data?.identityNumber)}
+                onPress={() => copyToClipboard(users.Profile?.identityNumber)}
               >
                 <FontAwesome6 name="copy" size={24} color="#F75369" />
               </TouchableOpacity>
@@ -126,23 +119,23 @@ export const ProfileScreen = () => {
           </View>
           <View style={styles.data}>
             <Text style={styles.pribadi}>Gender</Text>
-            <Text style={styles.pribadiRight}>{data?.gender}</Text>
+            <Text style={styles.pribadiRight}>{users.Profile?.gender}</Text>
           </View>
           <View style={styles.data}>
             <Text style={styles.pribadi}>Alamat</Text>
-            <Text style={styles.pribadiRight}>{data?.address}</Text>
+            <Text style={styles.pribadiRight}>{users.Profile?.address}</Text>
           </View>
           <View style={styles.data}>
             <Text style={styles.pribadi}>Pekerjaan</Text>
-            <Text style={styles.pribadiRight}>{data?.job}</Text>
+            <Text style={styles.pribadiRight}>{users.Profile?.job}</Text>
           </View>
           <View style={styles.data}>
             <Text style={styles.pribadi}>No Telephone</Text>
-            <Text style={styles.pribadiRight}>{data?.phoneNumber}</Text>
+            <Text style={styles.pribadiRight}>{users.Profile?.phoneNumber}</Text>
           </View>
           <View style={styles.data}>
             <Text style={styles.pribadi}>Golongan Darah</Text>
-            <Text style={styles.pribadiRight}>{data?.bloodType}</Text>
+            <Text style={styles.pribadiRight}>{users.Profile?.bloodType}</Text>
           </View>
           <View style={styles.data}>
             <Text style={styles.pribadi}>Dibuat pada</Text>
@@ -153,6 +146,37 @@ export const ProfileScreen = () => {
           </View>
         </View>
       </View>
+    </View>
+    : 
+    <View style={{ backgroundColor: "white", flexDirection:'column' }}>
+      <View style={styles.rowContainer}>
+      <View style={styles.outerCircle}>
+        <Image source={{ uri: users.Profile?.imageUrl }} style={styles.imageStyle} />
+      </View>
+        {users?.name.split(" ").length === 1 ? (
+          <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+            {users?.name || users.Profile?.User.name}
+          </Text>
+        ) : (
+          <View>
+            <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+              {users.Profile?.User?.name.split(" ")[0] || users?.name.split(" ")[0]}
+            </Text>
+            <Text style={{ fontSize: 25 }}>
+              {users.name.split(" ").slice(1).join(" ")}
+            </Text>
+          </View>
+        )}
+      </View>
+      {/* unt button and name user */}
+      <View>
+        <Text style={{ fontSize: 17 }}>
+          Hello {users.username} please add profile information!
+        </Text>
+        <Button title="Add Profile" onPress={handleAddProfile} />
+      </View>
+    </View>
+      }
     </View>
   );
 };
