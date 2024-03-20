@@ -1,5 +1,5 @@
 // TabNavigator.js
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text } from "react-native";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 import HomePages from "../screens/Home";
@@ -11,6 +11,9 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import AddForm from "../screens/AddForm";
 import Recipient from "../screens/Recipient";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { AuthContext } from "../context/authContext";
+import * as SecureStore from "expo-secure-store";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -29,6 +32,16 @@ export default function TabNavigator() {
 
 function MainTabs() {
   const navigation = useNavigation();
+  const { setIsSignedIn } = useContext(AuthContext);
+  const handeLogout = async () => {
+    try {
+      await SecureStore.deleteItemAsync("access_token");
+      setIsSignedIn(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -81,7 +94,7 @@ function MainTabs() {
       color: '#F75369',
       fontSize: 25
     },
-    headerRight: () => <Entypo name="log-out" style={{ marginRight: 10, fontSize: 25, color: '#F75369' }}></Entypo>,
+    headerRight: () => (<TouchableOpacity onPress={handeLogout}><Entypo name="log-out" style={{ marginRight: 10, fontSize: 25, color: '#F75369' }}></Entypo></TouchableOpacity>),
   }}
 />
 

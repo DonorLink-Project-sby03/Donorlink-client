@@ -38,16 +38,6 @@ export const ProfileScreen = () => {
   const navigation = useNavigation();
   const { fetchUser, users } = useContext(AuthContext);
 
-  const { setIsSignedIn } = useContext(AuthContext);
-  const handeLogout = async () => {
-    try {
-      await SecureStore.deleteItemAsync("access_token");
-      setIsSignedIn(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const handleAddProfile = async () => {
     try {
       navigation.navigate("AddForm");
@@ -151,16 +141,16 @@ export const ProfileScreen = () => {
     <View style={{ backgroundColor: "white", flexDirection:'column' }}>
       <View style={styles.rowContainer}>
       <View style={styles.outerCircle}>
-        <Image source={{ uri: users.Profile?.imageUrl }} style={styles.imageStyle} />
+        <Image source={{ uri:"https://th.bing.com/th/id/OIP.xo-BCC1ZKFpLL65D93eHcgHaGe?rs=1&pid=ImgDetMain" }} style={styles.imageStyle} />
       </View>
         {users?.name.split(" ").length === 1 ? (
           <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-            {users?.name || users.Profile?.User.name}
+            {users?.name}
           </Text>
         ) : (
           <View>
             <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-              {users.Profile?.User?.name.split(" ")[0] || users?.name.split(" ")[0]}
+              {users?.name.split(" ")[0]}
             </Text>
             <Text style={{ fontSize: 25 }}>
               {users.name.split(" ").slice(1).join(" ")}
