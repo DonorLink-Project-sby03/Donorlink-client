@@ -13,6 +13,7 @@ import History from '../screens/History';
 import ConfirmForm from '../screens/ConfimForm';
 import ConfirmImg from '../screens/confirmImg';
 import Recipient from '../screens/Recipient';
+import { LandingPage } from '../screens/LandingPage';
 
 const Stack = createStackNavigator();
 
@@ -33,6 +34,7 @@ export default function StackNavigator() {
           <Stack.Screen name="Confirm" component={ConfirmForm} />
           <Stack.Screen name="ConfirmImg" component={ConfirmImg} />
           <Stack.Screen name="Recipants" component={Recipient} />
+          <Stack.Screen name="LandingPage" component={LandingPage} />
         </>
       ) : (
         <>

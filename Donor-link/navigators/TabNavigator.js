@@ -14,6 +14,7 @@ import Recipient from "../screens/Recipient";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../context/authContext";
 import * as SecureStore from "expo-secure-store";
+import { LandingPage } from "../screens/LandingPage";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -66,17 +67,20 @@ function MainTabs() {
       }}
     >
       <Tab.Screen
-  name="Home"
-  component={HomePages}
-  options={({ navigation }) => ({
-    title: "Home",
-    headerStyle: {
-      backgroundColor: "#fbfbfb",
-    },
-    headerShown: true,
-  })}
-/>
-
+        name="LandingPage"
+        component={LandingPage}
+        options={({ navigation }) => ({
+          title: "DonorLink",
+          headerStyle: {
+            backgroundColor: "#fbfbfb",
+          },
+          headerTitleStyle: {
+            fontSize: 30, // Atur ukuran teks
+          },
+          headerTintColor: "#F75369", // Menetapkan warna teks
+          headerShown: true,
+        })}
+      />
       <Tab.Screen
         name="Recipents"
         component={Recipient}
@@ -86,18 +90,17 @@ function MainTabs() {
         }}
       />
       <Tab.Screen
-  name="Profile"
-  component={ProfileScreen}
-  options={{
-    headerShown: true,
-    headerTitle: "Profile",
-    headerTitleStyle: {
-      color: '#F75369',
-      fontSize: 25
-    },
-  }}
-/>
-
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          headerShown: true,
+          headerTitle: "Profile",
+          headerTitleStyle: {
+            color: "#F75369",
+            fontSize: 25,
+          },
+        }}
+      />
     </Tab.Navigator>
   );
 }
