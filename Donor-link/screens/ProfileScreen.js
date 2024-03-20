@@ -31,11 +31,12 @@ export const ProfileScreen = () => {
   };
 
   const navigation = useNavigation();
-  const { fetchUser, users } = useContext(AuthContext);
+  const { fetchUser, users, setIsSignedIn} = useContext(AuthContext);
   console.log(users, 'users');
   const handeLogout = async () => {
     try {
       await SecureStore.deleteItemAsync("access_token");
+      setIsSignedIn(false)
     } catch (error) {
       console.log(error);
     }
@@ -50,10 +51,8 @@ export const ProfileScreen = () => {
   const createdAtDate = new Date(users?.createdAt);
   const testDate = new Date();
   if (createdAtDate.getDate() === testDate.getDate() && createdAtDate.getMonth() === testDate.getMonth() && createdAtDate.getFullYear() === testDate.getFullYear()) {
-    // Format tanggal dari createdAt menjadi "DD MMM YYYY"
     const formattedDate = format(createdAtDate, 'dd MMM yyyy');
   }
-
   useEffect(() => {
     fetchUser();
   }, []);
@@ -65,10 +64,13 @@ export const ProfileScreen = () => {
           <View style={styles.rowContainer}>
             <View style={styles.outerCircle}>
               <View style={styles.overlay} />
-              <Image source={{ uri: users?.Profile?.imageUrl }} style={styles.imageStyle} />
+              {users.Profile.imageUrl === null || users.Profile.imageUrl === "" ? (
+                 <Image source={require('../assets/user1.jpg ')} style={styles.imageStyle} />
+                ) : (
+                  <Image source={{ uri: users?.Profile?.imageUrl }} style={styles.imageStyle} />
+                )}
             </View>
-            {users?.name.split(" ").length === 1 ||
-            users?.name.split(" ").length === 1 ? (
+            {users?.name.split(" ").length === 1 ? (
               <Text style={{ fontSize: 25, fontWeight: "bold" }}>
                 {users?.name}
               </Text>
@@ -157,14 +159,6 @@ export const ProfileScreen = () => {
                 </View>
               </TouchableOpacity>
             </View>
-            {users?.name.split(' ').length === 1 ? (
-              <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{users?.name}</Text>
-            ) : (
-              <View>
-                <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{users?.name.split(' ')[0]}</Text>
-                <Text style={{ fontSize: 25 }}>{users.name.split(' ').slice(1).join(' ')}</Text>
-              </View>
-            )}
           </View>
         </>
       ) : (
@@ -225,6 +219,8 @@ const styles = StyleSheet.create({
     width: 78,
     height: 78,
     borderRadius: 50,
+    color: 'white',
+    backgroundColor: 'white'
   },
   data: {
     flexDirection: "row",
