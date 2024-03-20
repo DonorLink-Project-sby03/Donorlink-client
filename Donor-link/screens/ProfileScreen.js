@@ -15,53 +15,11 @@ import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/authContext";
 import { useContext, useEffect, useState } from "react";
-import instance from "../instance/config";
 import { Fontisto } from '@expo/vector-icons';
 
 export const ProfileScreen = () => {
-  const [data, setData] = useState("");
-  const [user, setUser] = useState("");
   const navigation = useNavigation();
   const { fetchUser, users } = useContext(AuthContext);
-
-  let getData = async () => {
-    try {
-      const { data } = await instance({
-        headers: {
-          Authorization: `Bearer ${await SecureStore.getItemAsync(
-            "access_token"
-          )}`,
-        },
-        method: "GET",
-        url: "/profile/",
-      });
-      setData(data);
-    } catch (error) {
-      console.log();
-    }
-  };
-
-  let getDataUser = async () => {
-    try {
-      const { data } = await instance({
-        headers: {
-          Authorization: `Bearer ${await SecureStore.getItemAsync(
-            "access_token"
-          )}`,
-        },
-        method: "GET",
-        url: "/users/",
-      });
-      setUser(data);
-    } catch (error) {
-      console.log();
-    }
-  };
-
-  useEffect(() => {
-    getData();
-    getDataUser();
-  }, []);
 
   const { setIsSignedIn } = useContext(AuthContext);
   const handeLogout = async () => {
@@ -80,8 +38,12 @@ export const ProfileScreen = () => {
       console.log(error);
     }
   }
-  console.log(data,'<< data ');
-  console.log(users,'<< users');
+  // console.log(data,'<< data ');
+  // console.log(users,'<< users');
+
+  useEffect(()=>{
+    fetchUser()
+  },[])
 
   return (
     <View style={{ flex: 1, backgroundColor:'blue' }}>
@@ -121,7 +83,7 @@ export const ProfileScreen = () => {
             }}
           />
         </View>
-        {data || users.Profile ? (
+        {users.Profile ? (
           <View>
             <View>
               <Text
@@ -132,7 +94,7 @@ export const ProfileScreen = () => {
                   marginTop: 60,
                 }}
               >
-                {users.name}
+                {users.username}
               </Text>
               <View style={{ marginLeft: 110 }}>
               <View style={styles.rowContainer}>
@@ -193,7 +155,7 @@ export const ProfileScreen = () => {
               </TouchableOpacity>
             </View>
             <Text style={{ fontSize: 17 }}>
-              Hello {user.username} please add profile information!
+              Hello {users.username} please add profile information!
             </Text>
             <Button title="Add Profile" onPress={handleAddProfile} />
           </View>
