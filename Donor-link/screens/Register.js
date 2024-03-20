@@ -69,28 +69,28 @@ export default function RegisterScreen() {
             <TextInput
               style={styles.input}
               placeholder="Name"
-              placeholderTextColor={"#222831"}
+              placeholderTextColor={"grey"}
               value={name}
               onChangeText={setName}
             />
             <TextInput
               style={styles.input}
               placeholder="Username"
-              placeholderTextColor={"#222831"}
+              placeholderTextColor={"grey"}
               value={username}
               onChangeText={setUsername}
             />
             <TextInput
               style={styles.input}
               placeholder="Email"
-              placeholderTextColor={"#222831"}
+              placeholderTextColor={"grey"}
               value={email}
               onChangeText={setEmail}
             />
             <TextInput
               style={styles.input}
               placeholder="Password"
-              placeholderTextColor={"#222831"}
+              placeholderTextColor={"grey"}
               secureTextEntry={true}
               value={password}
               onChangeText={setPassword}

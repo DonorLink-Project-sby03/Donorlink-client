@@ -53,7 +53,7 @@ export default function ConfirmForm() {
 
 const styles = StyleSheet.create({
   buttonStyle: {
-    backgroundColor: '#307ecc',
+    backgroundColor: '#F75369',
     borderWidth: 0,
     color: '#FFFFFF',
     borderColor: '#307ecc',

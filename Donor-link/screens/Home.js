@@ -98,7 +98,6 @@ export default function HomePages({ navigation }) {
             })
           )
         }
-        
       </ScrollView>
     </SafeAreaView>
   );
