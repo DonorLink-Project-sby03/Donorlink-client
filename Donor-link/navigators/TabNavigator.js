@@ -66,16 +66,22 @@ function MainTabs() {
       }}
     >
       <Tab.Screen
-        name="Home"
-        component={HomePages}
-        options={() => ({
-          title: "Home",
-          headerStyle: {
-            backgroundColor: "#fbfbfb",
-          },
-          headerShown: true,
-        })}
-      />
+  name="Home"
+  component={HomePages}
+  options={({ navigation }) => ({
+    title: "Home",
+    headerStyle: {
+      backgroundColor: "#fbfbfb",
+    },
+    headerShown: true,
+    headerRight: () => (
+      <TouchableOpacity onPress={handeLogout}>
+        <Text style={{ marginRight: 10 }}>Logout</Text>
+      </TouchableOpacity>
+    ),
+  })}
+/>
+
       <Tab.Screen
         name="Recipents"
         component={Recipient}

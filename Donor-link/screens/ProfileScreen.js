@@ -32,7 +32,14 @@ export const ProfileScreen = () => {
 
   const navigation = useNavigation();
   const { fetchUser, users } = useContext(AuthContext);
-
+  console.log(users, 'users');
+  const handeLogout = async () => {
+    try {
+      await SecureStore.deleteItemAsync("access_token");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleAddProfile = async () => {
     try {
       navigation.navigate('AddForm');
@@ -53,7 +60,7 @@ export const ProfileScreen = () => {
 
   return (
     <View style={{ backgroundColor: "white", flex: 1 }}>
-      {users ? (
+      {users?.Profile !== null ? (
         <>
           <View style={styles.rowContainer}>
             <View style={styles.outerCircle}>
@@ -96,7 +103,7 @@ export const ProfileScreen = () => {
                     alignItems: "center",
                   }}
                 >
-                  <Text style={styles.pribadiRight}>{users?.Profile.?.identityNumber} </Text>
+                  <Text style={styles.pribadiRight}>{users?.Profile?.identityNumber} </Text>
                   <TouchableOpacity
                     onPress={() => copyToClipboard(users?.Profile?.identityNumber)}
                   >
@@ -179,7 +186,7 @@ export const ProfileScreen = () => {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleAddProfile}>
+        <TouchableOpacity onPress={handeLogout}>
         <View
             style={{
               flexDirection: "row",
