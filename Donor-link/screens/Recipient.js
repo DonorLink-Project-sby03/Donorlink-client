@@ -68,6 +68,7 @@ export default function Recipient() {
       setSelected(false);
       fetchRecipients;
     } catch (error) {
+      Alert.alert('Info',error.message.split('with status code')[0])
       console.log(error);
     }
   };

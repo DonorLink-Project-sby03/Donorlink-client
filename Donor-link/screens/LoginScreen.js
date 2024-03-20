@@ -15,7 +15,6 @@ import {
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import instance from "../instance/config";
-import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/authContext";
 
@@ -23,7 +22,7 @@ export default function LoginScreen() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { isSignedIn, setIsSignedIn, fetchUser } = useContext(AuthContext);
+  const { setIsSignedIn, fetchUser } = useContext(AuthContext);
 
   const submitHandler = async () => {
     try {
@@ -31,22 +30,21 @@ export default function LoginScreen() {
         email,
         password,
       });
-      let token = await SecureStore.setItemAsync(
+      await SecureStore.setItemAsync(
         "access_token",
         data.access_token
       );
       setIsSignedIn(true);
-      fetchUser();
     } catch (error) {
-      console.log(error);
+      Alert.alert('Info',error.message.split('with status code')[0])
+      // console.log(error.message.split('with status code')[0],'<<<');
     } finally {
+      fetchUser();
       setTimeout(() => {
         // Code to execute after 5 seconds
       }, 5000);
     }
   };
-  console.log(email);
-  console.log(password);
 
   return (
     <KeyboardAvoidingView
@@ -91,7 +89,7 @@ export default function LoginScreen() {
                     fontSize: 16,
                   }}
                 >
-                  register
+                  Register
                 </Text>
               </TouchableOpacity>
             </View>

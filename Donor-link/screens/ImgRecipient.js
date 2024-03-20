@@ -39,6 +39,7 @@ export default function ImgRecipient() {
         return true;
       }
     } catch (error) {
+      Alert.alert('Info',error.message.split('with status code')[0])
       console.warn(error);
       return false;
     }

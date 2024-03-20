@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
+  Alert,
 } from "react-native";
 import { RadioButton } from "react-native-paper";
 import instance from "../instance/config"; // Pastikan Anda mengimpor instance dengan benar
@@ -68,6 +69,7 @@ export default function AddForm() {
         id: data.id,
       });
     } catch (error) {
+      Alert.alert('Info',error.message.split('with status code')[0])
       console.log(error);
     }
   };

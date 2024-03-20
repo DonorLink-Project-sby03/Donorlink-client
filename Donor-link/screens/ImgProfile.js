@@ -81,7 +81,7 @@ export default function ImgProfile() {
         }
       } catch (error) {
         // Error retrieving data
-        // Alert.alert('Error', error.message);
+        Alert.alert('Info',error.message.split('with status code')[0])
         console.log('error upload', error);
       } finally {
         setIsLoading(false);
