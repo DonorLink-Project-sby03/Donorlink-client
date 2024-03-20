@@ -19,16 +19,21 @@ export default function CardChat({ data }) {
   });
   console.log(donation, '<<<<');
   let total = (donation / data.stock) * 100;
+
   // Menghitung persentase donasi masuk
   return (
     <View style={styles.cardContainer}>
       <Pressable
-        onPress={() =>
-          navigation.navigate("Detail", {
-            postId: data.id,
-          })
-        }
-      >
+          onPress={() =>
+            navigation.navigate('Detail', {
+              postId: data.id,
+              bloodType: data.bloodType,
+              latitude: data.latitude,
+              longitude: data.longitude,
+              location: data.location,
+            })
+          }
+        >
         <View style={styles.cardContent}>
           <Image
             source={{ uri: data?.image }}

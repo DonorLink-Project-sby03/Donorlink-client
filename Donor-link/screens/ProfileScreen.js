@@ -45,54 +45,15 @@ export const ProfileScreen = () => {
   const { users } = useContext(AuthContext);
   const [data, setData] = useState("");
   const [user, setUser] = useState("");
+
   const navigation = useNavigation();
-  let getData = async () => {
-    let token = await SecureStore.getItemAsync("access_token" || null);
-    console.log(token);
-    try {
-      const { data } = await instance({
-        headers: {
-          Authorization: `Bearer ${await SecureStore.getItemAsync(
-            "access_token"
-          )}`,
-        },
-        method: "GET",
-        url: "/profile/",
-      });
-      setData(data);
-    } catch (error) {
-      console.log();
-    }
-  };
+  const { fetchUser, users } = useContext(AuthContext);
 
-  let getDataUser = async () => {
-    try {
-      const { data } = await instance({
-        headers: {
-          Authorization: `Bearer ${await SecureStore.getItemAsync(
-            "access_token"
-          )}`,
-        },
-        method: "GET",
-        url: "/users/",
-      });
-      setUser(data);
-    } catch (error) {
-      console.log();
-    }
-  };
-
-  useEffect(() => {
-    getData();
-    getDataUser();
-  }, []);
-
-  const { isSignedIn, setIsSignedIn } = useContext(AuthContext);
+  const { setIsSignedIn } = useContext(AuthContext);
   const handeLogout = async () => {
     try {
       await SecureStore.deleteItemAsync("access_token");
       setIsSignedIn(false);
-      // navigation.navigate("Login")
     } catch (error) {
       console.log(error);
     }
