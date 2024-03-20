@@ -6,14 +6,12 @@ import {
   TextInput,
   View,
   TouchableOpacity,
-  ImageBackground,
   Image,
   ScrollView, // Import ImageBackground
   Dimensions,
   KeyboardAvoidingView,
   Platform
 } from "react-native";
-import * as SecureStore from "expo-secure-store";
 import instance from "../instance/config";
 import { useNavigation } from "@react-navigation/native";
 
@@ -32,9 +30,9 @@ export default function RegisterScreen() {
         email: email,
         password: password,
       });
-      console.log(data, "<<<<");
       navigation.navigate("Login");
     } catch (error) {
+      Alert.alert('Info',error.message.split('with status code')[0])
       console.log(error, "<<<");
     }
   };

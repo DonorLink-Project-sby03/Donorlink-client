@@ -1,8 +1,7 @@
 import { useContext, useState } from 'react';
-import { Button, StyleSheet, Text, View, PermissionsAndroid, Alert, TextInput } from 'react-native';
+import { Button, StyleSheet, Text, View, Alert, TextInput } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import axios from '../instance/config';
-import * as DocumentPicker from 'expo-document-picker';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AuthContext } from '../context/authContext';
@@ -17,21 +16,26 @@ export default function ConfirmForm() {
   const {fetchRecipients} = useContext(AuthContext)
 
   const confirmDonor = async () => {
-    const { data } = await axios.post(
-      '/donorconfirmation/' + params.donorId,
-      { location, stock },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    console.log(data.id, '<<< dari confirm donor');
-    setDonorConfirmId(data.id);
-    fetchRecipients()
-    navigation.navigate('ConfirmImg', {
-      donorConfirmId: data.id,
-    });
+    try {
+      const { data } = await axios.post(
+        '/donorconfirmation/' + params.donorId,
+        { location, stock },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // console.log(data.id, '<<< dari confirm donor');
+      setDonorConfirmId(data.id);
+      fetchRecipients()
+      navigation.navigate('ConfirmImg', {
+        donorConfirmId: data.id,
+      });
+    } catch (error) {
+      Alert.alert('Info',error.message.split('with status code')[0])
+      console.log(error,'<-err confirm form');
+    }
   };
 
   return (
