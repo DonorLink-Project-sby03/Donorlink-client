@@ -10,13 +10,33 @@ import {
   View,
 } from "react-native";
 import CardChat from "../components/CardChat";
+import * as SecureStore from 'expo-secure-store';
 import axios from "../instance/config";
 import { useContext, useDebugValue, useEffect, useState } from "react";
 import { AuthContext } from "../context/authContext";
 import { TextInput } from "react-native-gesture-handler";
 
 export default function HomePages({ navigation }) {
+  const [search, setSearch] = useState("")
+  const [dataSearch, setDataSearch] = useState(null)
   const { items } = useContext(AuthContext);
+  const token = SecureStore.getItem('access_token');
+  
+  console.log(dataSearch, "<<<Datasearch");
+  const handlePress = async () => {
+    console.log("Tekan");
+    try {
+      const { data } = await axios.get(`/recipients?search=${search}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setDataSearch(data);
+    } catch (error) {
+      console.log("<<Masuk error");
+      console.log(error);
+    }
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fffdfb" }}>
@@ -38,8 +58,10 @@ export default function HomePages({ navigation }) {
             }}
           >
             <TextInput
-              placeholder="Search..."
-              placeholderTextColor={"#F75369"}
+              placeholder="Search location..."
+              placeholderTextColor={"#DDDDDD"}
+              value={search}
+              onChangeText={setSearch}
               style={{
                 zIndex: 1, // Menetapkan zIndex pada TextInput
                 height: 35,
@@ -63,13 +85,22 @@ export default function HomePages({ navigation }) {
             }}
           >
             <TouchableOpacity>
-              <Text style={{color: 'white'}}>Find</Text>
+              <Text onPress={handlePress} style={{color: 'white'}}>Find</Text>
             </TouchableOpacity>
           </View>
         </View>
-        {items.map((data) => {
-          return <CardChat key={data.id} data={data} />;
-        })}
+        {
+          !dataSearch ? (
+            items.map((data) => {
+              return <CardChat key={data.id} data={data} />;
+            })
+          ) : (
+            dataSearch.map((data) => {
+              return <CardChat key={data.id} data={data} />;
+            })
+          )
+        }
+        
       </ScrollView>
     </SafeAreaView>
   );
