@@ -16,6 +16,8 @@ import Recipient from "../screens/Recipient";
 import { LandingPage } from "../screens/LandingPage";
 import HomePages from "../screens/Home";
 import { ProfileScreen } from "../screens/ProfileScreen";
+import { TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 const Stack = createStackNavigator();
 
@@ -44,16 +46,26 @@ export default function StackNavigator() {
             }}
           />
           <Stack.Screen
-            name="Detail"
-            component={Detail}
-            options={{
-              title: "Detail",
-              headerTintColor: "#F75369",
-              headerTitleStyle: {
-                fontSize: 30, // Atur ukuran teks
-              },
-            }}
-          />
+  name="Detail"
+  component={Detail}
+  options={({ navigation }) => ({
+    headerTintColor: "#F75369",
+    headerShown: true,
+    headerTransparent: true,
+    headerLeft: () => (
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Ionicons
+          name="arrow-back"
+          size={35}
+          color="black"
+          style={{ marginLeft: 15, backgroundColor: 'white', borderRadius: 50 }}
+        />
+      </TouchableOpacity>
+    ),
+    title: ""
+  })}
+/>
+
           <Stack.Screen
             name="ImgRecipient"
             component={ImgRecipient}

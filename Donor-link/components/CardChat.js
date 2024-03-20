@@ -33,88 +33,97 @@ export default function CardChat({ data }) {
   // Menghitung persentase donasi masuk
   return (
     <SafeAreaView>
-      <ScrollView style={styles.scrollView}>
+    <ScrollView style={styles.scrollView}>
+      {data === undefined ? (
+        null
+      ) : (
         <View style={{flex: 1, backgroundColor: "white"}}>
-          <View style={styles.cardContainer}>
-            <Pressable
-              onPress={() =>
-                navigation.navigate("Detail", {
-                  postId: data.id,
-                  bloodType: data.bloodType,
-                  latitude: data.latitude,
-                  longitude: data.longitude,
-                  location: data.location,
-                })
-              }
-            >
-              <View style={styles.cardContent}>
-                <Image
-                  source={{ uri: data?.image }}
-                  style={{
-                    backgroundColor: "black",
-                    width: 130,
-                    height: 130,
-                    borderRadius: 10,
-                    marginRight: 10,
-                  }}
-                />
-                <View style={{ flex: 1 }}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    {data?.User?.username === undefined ? (
-                      <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-                        Unknown
+          <View>
+            <View key={data.createdAt}>
+              <View style={styles.cardContainer}>
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate("Detail", {
+                      postId: data.id,
+                      bloodType: data.bloodType,
+                      latitude: data.latitude,
+                      longitude: data.longitude,
+                      location: data.location,
+                    })
+                  }
+                >
+                  <View style={styles.cardContent}>
+                    <Image
+                      source={{ uri: data?.image }}
+                      style={{
+                        backgroundColor: "black",
+                        width: 130,
+                        height: 130,
+                        borderRadius: 10,
+                        marginRight: 10,
+                      }}
+                    />
+                    <View style={{ flex: 1 }}>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        {data?.User?.username === undefined ? (
+                          <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                            Unknown
+                          </Text>
+                        ) : (
+                          <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                            {data?.User?.username &&
+                              data.User.username.split(" ")[0]}
+                          </Text>
+                        )}
+                        <View style={{ flexDirection: "row" }}>
+                          <MaterialIcons
+                            name="bloodtype"
+                            size={25}
+                            color="#F75369"
+                          />
+                          <Text style={{ fontSize: 17, color: "#F75369" }}>
+                            {data?.bloodType}{" "}
+                          </Text>
+                        </View>
+                      </View>
+                      <Text style={{ fontSize: 17, marginBottom: 27 }}>
+                        {data.description.split(" ").slice(0, 3).join(" ")}
+                        {data.description.split(" ").length > 3 && "..."}
                       </Text>
-                    ) : (
-                      <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-                        {data?.User?.username &&
-                          data.User.username.split(" ")[0]}
+                      <Text style={{ marginTop: 10, fontSize: 17 }}>
+                        Donor: {donation}ml of {data.stock}ml
                       </Text>
-                    )}
-                    <View style={{ flexDirection: "row" }}>
-                      <MaterialIcons
-                        name="bloodtype"
-                        size={25}
-                        color="#F75369"
+                      <ProgressBar
+                        progress={total / 100}
+                        color="red"
+                        style={{ marginTop: 10, height: 10, borderRadius: 10 }}
                       />
-                      <Text style={{ fontSize: 17, color: "#F75369" }}>
-                        {data?.bloodType}{" "}
-                      </Text>
                     </View>
                   </View>
-                  <Text style={{ fontSize: 17, marginBottom: 27 }}>
-                    {data.description.split(" ").slice(0, 3).join(" ")}
-                    {data.description.split(" ").length > 3 && "..."}
-                  </Text>
-                  <Text style={{ marginTop: 10, fontSize: 17 }}>
-                    Donor: {donation}ml of {data.stock}ml
-                  </Text>
-                  <ProgressBar
-                    progress={total / 100}
-                    color="red"
-                    style={{ marginTop: 10, height: 10, borderRadius: 10 }}
-                  />
-                </View>
+                </Pressable>
               </View>
-            </Pressable>
+              <View
+                style={{
+                  height: 2,
+                  backgroundColor: "#F75369",
+                  alignSelf: "stretch",
+                  marginTop: 2,
+                  marginHorizontal: 15,
+                }}
+              />
+            </View>
           </View>
-            <View
-              style={{
-                height: 2,
-                backgroundColor: "#F75369",
-                alignSelf: "stretch",
-                marginTop: 2,
-                marginHorizontal: 15,
-              }}
-            />
         </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+      )}
+    </ScrollView>
+  </SafeAreaView>
+  
+  );  
 }
 
 const styles = StyleSheet.create({

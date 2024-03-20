@@ -67,8 +67,8 @@ export default function HomePages({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-        {items.map((data) => {
-          return <CardChat key={data.id} data={data} />;
+        {items.map((data, i) => {
+          return <CardChat key={data.createdAt} data={data} />;
         })}
       </ScrollView>
     </SafeAreaView>
