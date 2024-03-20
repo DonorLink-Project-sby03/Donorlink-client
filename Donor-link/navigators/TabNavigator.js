@@ -74,11 +74,6 @@ function MainTabs() {
       backgroundColor: "#fbfbfb",
     },
     headerShown: true,
-    headerRight: () => (
-      <TouchableOpacity onPress={handeLogout}>
-        <Text style={{ marginRight: 10 }}>Logout</Text>
-      </TouchableOpacity>
-    ),
   })}
 />
 
