@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Clipboard,
 } from "react-native";
-import * as SecureStore from "expo-secure-store";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/authContext";
 import { useContext, useEffect } from "react";
