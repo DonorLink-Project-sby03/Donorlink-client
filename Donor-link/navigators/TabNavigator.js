@@ -48,18 +48,10 @@ function MainTabs() {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-          if (route.name === "Home") {
+          if (route.name === "LandingPage") {
             iconName = focused ? "home" : "home-outline";
             return <Ionicons name={iconName} size={30} color={"#F75369"} />;
-          } else if (route.name === "Profile") {
-            iconName = focused ? "user-circle-o" : "user-circle";
-            return <FontAwesome name={iconName} size={30} color={"#F75369"} />;
-          } else if (route.name === "Recipents") {
-            iconName = focused ? "add-circle" : "add-circle-outline";
-            return (
-              <MaterialIcons name={iconName} size={30} color={"#F75369"} />
-            );
-          }
+          } 
         },
       })}
       tabBarOptions={{
@@ -72,34 +64,15 @@ function MainTabs() {
         options={({ navigation }) => ({
           title: "DonorLink",
           headerStyle: {
-            backgroundColor: "#fbfbfb",
+            backgroundColor: "white",
           },
           headerTitleStyle: {
             fontSize: 30, // Atur ukuran teks
           },
           headerTintColor: "#F75369", // Menetapkan warna teks
           headerShown: true,
+          tabBarStyle: { display: 'none' }
         })}
-      />
-      <Tab.Screen
-        name="Recipents"
-        component={Recipient}
-        options={{
-          title: "Hello",
-          headerShown: false,
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          headerShown: true,
-          headerTitle: "Profile",
-          headerTitleStyle: {
-            color: "#F75369",
-            fontSize: 25,
-          },
-        }}
       />
     </Tab.Navigator>
   );

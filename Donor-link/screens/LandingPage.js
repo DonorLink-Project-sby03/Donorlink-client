@@ -9,20 +9,18 @@ import {
   StyleSheet,
   Clipboard,
 } from "react-native";
-import { Foundation } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome5, FontAwesome, Feather, MaterialIcons, Fontisto, Ionicons, MaterialCommunityIcons  } from "@expo/vector-icons";
 import * as SecureStore from "expo-secure-store";
-import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/authContext";
 import { useContext, useEffect, useState } from "react";
-import * as Progress from "react-native-progress";
-import instance from "../instance/config";
-import { FontAwesome6 } from "@expo/vector-icons";
-import { format } from "date-fns";
 
 export const LandingPage = () => {
+  const [backgroundColor, setBackgroundColor] = useState("#F75369");
+
+  const handlePress = () => {
+    setBackgroundColor("#F75369");
+  };
   const monthNames = [
     "Jan",
     "Feb",
@@ -37,15 +35,10 @@ export const LandingPage = () => {
     "Nov",
     "Dec",
   ];
-
-  const copyToClipboard = (text) => {
-    Clipboard.setString(text);
-    alert("Text copied to clipboard!");
-  };
-
   const navigation = useNavigation();
-  const { fetchUser, users, setIsSignedIn } = useContext(AuthContext);
+  const { fetchUser, users, setIsSignedIn, fetchRecipients, fetchDonorByUsers } = useContext(AuthContext);
   console.log(users, "users");
+
   const handeLogout = async () => {
     try {
       await SecureStore.deleteItemAsync("access_token");
@@ -54,187 +47,158 @@ export const LandingPage = () => {
       console.log(error);
     }
   };
-  const handleAddProfile = async () => {
+
+  const handleRecipients = async () => {
     try {
-      navigation.navigate("AddForm");
+      navigation.navigate("Home");
+      fetchRecipients()
     } catch (error) {
       console.log(error);
     }
   };
-  const createdAtDate = new Date(users?.createdAt);
-  const testDate = new Date();
-  if (
-    createdAtDate.getDate() === testDate.getDate() &&
-    createdAtDate.getMonth() === testDate.getMonth() &&
-    createdAtDate.getFullYear() === testDate.getFullYear()
-  ) {
-    const formattedDate = format(createdAtDate, "dd MMM yyyy");
-  }
-  useEffect(() => {
-    fetchUser();
-  }, []);
-  console.log(users, "users Landing");
+
+  const handleProfile = async () => {
+    try {
+      navigation.navigate("Profile");
+      fetchUser()
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleHistory = async () => {
+    try {
+      navigation.navigate("History");
+      fetchDonorByUsers()
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleAddRecipients = async () => {
+    try {
+      navigation.navigate("Recipants");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  let color = "#F75369";
 
   return (
     <View style={{ backgroundColor: "white", flex: 1 }}>
-      {users?.Profile !== null ? (
-        <>
+      <>
+        <View style={styles.rowContainer}>
+          <View style={styles.outerCircle}>
+            <View style={styles.overlay} />
+            {users?.Profile?.imageUrl === null ||
+            users?.Profile?.imageUrl === "" ||
+            users?.Profile?.imageUrl === undefined ? (
+              <Image
+                source={require("../assets/user.png")}
+                style={styles.imageStyle}
+              />
+            ) : (
+              <Image
+                source={{ uri: users?.Profile?.imageUrl }}
+                style={styles.imageStyle}
+              />
+            )}
+          </View>
+          <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+            {users?.name?.includes(" ") ? (
+              <>
+                {users.name.split(" ").slice(0, -2).join(" ")}
+                {"\n"}
+                {users.name.split(" ").slice(-2).join(" ")}
+              </>
+            ) : (
+              users?.name
+            )}
+          </Text>
+        </View>
+        <View style={{ marginTop: 16, paddingBottom: 10 }}>
+          <View
+            style={{
+              height: 3,
+              backgroundColor: "#F75369",
+              alignSelf: "stretch",
+              marginBottom: 15,
+            }}
+          />
+          {/* Profile and Postingan */}
+          <View style={styles.rowContainer}> 
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={[styles.touchable, { backgroundColor: backgroundColor }]}
+              onPress={handleProfile}
+            >
+              <View style={styles.viewButton}>
+                <View style={styles.data}>
+                  <FontAwesome5 name="user-circle" size={35} color={color} />
+                  <Text>My Account</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={[styles.touchable, { backgroundColor: backgroundColor }]}
+              onPress={handleRecipients}
+            >
+              <View style={styles.viewButton}>
+                <View style={styles.data}>
+                <MaterialCommunityIcons name="file-document-multiple-outline" size={35} color={color} />
+                  <Text>Post</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+          {/* History and Add Recipents */}
           <View style={styles.rowContainer}>
-            <View style={styles.outerCircle}>
-              <View style={styles.overlay} />
-              {users?.Profile?.imageUrl === null ||
-              users?.Profile?.imageUrl === "" ||
-              users?.Profile?.imageUrl === undefined ? (
-                <Image
-                  source={require("../assets/user.png")}
-                  style={styles.imageStyle}
-                />
-              ) : (
-                <Image
-                  source={{ uri: users?.Profile?.imageUrl }}
-                  style={styles.imageStyle}
-                />
-              )}
-            </View>
-            <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-              {users?.name?.includes(" ") ? (
-                <>
-                  {users.name.split(" ").slice(0, -2).join(" ")}
-                  {"\n"}
-                  {users.name.split(" ").slice(-2).join(" ")}
-                </>
-              ) : (
-                users?.name
-              )}
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={[styles.touchable, { backgroundColor: backgroundColor }]}
+              onPress={handleHistory}
+            >
+              <View style={styles.viewButton}>
+                <View style={styles.data}>
+                  <Fontisto name="history" size={35} color={color} />
+                  <Text>History</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={[styles.touchable, { backgroundColor: backgroundColor }]}
+              onPress={handleAddRecipients}
+            >
+              <View style={styles.viewButton}>
+                <View style={styles.data}>
+                  <Ionicons name="add" size={35} color={color} />
+                  <Text>Add Recipients</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+          {/* Logout */}
+          <TouchableOpacity onPress={handeLogout}>
+        <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              marginHorizontal: 15,
+              backgroundColor: "#F75369",
+              marginVertical: 10,
+              borderRadius: 10,
+              paddingHorizontal: 10,
+            }}
+          >
+            <Text style={{ fontSize: 23, color: "white", paddingBottom: 10 }}>
+              Logout
             </Text>
           </View>
-          <View style={{ marginTop: 16, paddingBottom: 10 }}>
-            <View
-              style={{
-                height: 3,
-                backgroundColor: "#F75369",
-                alignSelf: "stretch",
-                marginBottom: 15,
-              }}
-            />
-            <View>
-              <View style={styles.data}>
-                <Text style={styles.pribadi}>No Identitas</Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text style={styles.pribadiRight}>
-                    {users?.Profile?.identityNumber}{" "}
-                  </Text>
-                  <TouchableOpacity
-                    onPress={() =>
-                      copyToClipboard(users?.Profile?.identityNumber)
-                    }
-                  >
-                    <FontAwesome6 name="copy" size={24} color="#F75369" />
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View style={styles.data}>
-                <Text style={styles.pribadi}>Gender</Text>
-                <Text style={styles.pribadiRight}>
-                  {users?.Profile?.gender}
-                </Text>
-              </View>
-              <View style={styles.data}>
-                <Text style={styles.pribadi}>Alamat</Text>
-                <Text style={styles.pribadiRight}>
-                  {users?.Profile?.address}
-                </Text>
-              </View>
-              <View style={styles.data}>
-                <Text style={styles.pribadi}>Pekerjaan</Text>
-                <Text style={styles.pribadiRight}>{users?.Profile?.job}</Text>
-              </View>
-              <View style={styles.data}>
-                <Text style={styles.pribadi}>No Telephone</Text>
-                <Text style={styles.pribadiRight}>
-                  {users?.Profile?.phoneNumber}
-                </Text>
-              </View>
-              <View style={styles.data}>
-                <Text style={styles.pribadi}>Golongan Darah</Text>
-                <Text style={styles.pribadiRight}>
-                  {users?.Profile?.bloodType}
-                </Text>
-              </View>
-              <View style={styles.data}>
-                <Text style={styles.pribadi}>Dibuat pada</Text>
-                <Text style={styles.pribadiRight}>
-                  {createdAtDate.getDate()}{" "}
-                  {monthNames[createdAtDate.getMonth()]}{" "}
-                  {createdAtDate.getFullYear()}
-                </Text>
-              </View>
-              <TouchableOpacity onPress={handeLogout}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    marginHorizontal: 15,
-                    backgroundColor: "#F75369",
-                    marginVertical: 7,
-                    borderRadius: 10,
-                    paddingHorizontal: 10,
-                  }}
-                >
-                  <Text
-                    style={{ fontSize: 23, color: "white", paddingBottom: 10 }}
-                  >
-                    Logout
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </>
-      ) : (
-        <View style={{ flex: 1, justifyContent: "center" }}>
-          <TouchableOpacity onPress={handleAddProfile}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                marginHorizontal: 15,
-                backgroundColor: "#F75369",
-                marginVertical: 10,
-                borderRadius: 10,
-                paddingHorizontal: 10,
-              }}
-            >
-              <Text style={{ fontSize: 23, color: "white", paddingBottom: 10 }}>
-                Add Profile
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handeLogout}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                marginHorizontal: 15,
-                backgroundColor: "#F75369",
-                marginVertical: 10,
-                borderRadius: 10,
-                paddingHorizontal: 10,
-              }}
-            >
-              <Text style={{ fontSize: 23, color: "white", paddingBottom: 10 }}>
-                Logout
-              </Text>
-            </View>
-          </TouchableOpacity>
+        </TouchableOpacity>
         </View>
-      )}
+      </>
     </View>
   );
 };
@@ -245,11 +209,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     marginTop: 30,
   },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-betweens",
-    backgroundColor: "#efecec",
-    paddingHorizontal: 15,
+  touchable: {
+    backgroundColor: "#F75369",
+    borderRadius: 15,
+    color: "#F75369",
+  },
+  button: {
+    justifyContent: "center",
+    alignItems: "center",
   },
   imageStyle: {
     width: 78,
@@ -258,19 +225,12 @@ const styles = StyleSheet.create({
     color: "white",
     backgroundColor: "white",
   },
-  data: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginHorizontal: 15,
-    backgroundColor: "#f5f5f5",
-    marginVertical: 7,
+  viewButton: {
+    backgroundColor: "#fcfcfc",
+    padding: 30,
+    height: 125,
+    width: 150,
     borderRadius: 10,
-    paddingHorizontal: 10,
-  },
-  pribadi: {
-    fontSize: 23,
-    color: "grey",
-    paddingBottom: 10,
   },
   pribadiRight: {
     fontSize: 24,
@@ -295,5 +255,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#F75369", // Warna overlay
     overflow: "hidden",
     alignItems: "center",
+  },
+  data: {
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1,
   },
 });
