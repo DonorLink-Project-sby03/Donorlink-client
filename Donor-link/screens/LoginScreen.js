@@ -23,7 +23,7 @@ export default function LoginScreen() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { isSignedIn, setIsSignedIn } = useContext(AuthContext);
+  const { isSignedIn, setIsSignedIn, fetchUser } = useContext(AuthContext);
 
   const submitHandler = async () => {
     try {
@@ -37,6 +37,7 @@ export default function LoginScreen() {
         data.access_token
       );
       setIsSignedIn(true);
+      fetchUser()
     } catch (error) {
       console.log(error);
     }
