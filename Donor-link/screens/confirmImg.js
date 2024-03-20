@@ -6,6 +6,9 @@ import axios from '../instance/config';
 import { useContext, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AuthContext } from '../context/authContext';
+import { set } from 'date-fns';
+import { ActivityIndicator } from 'react-native-paper';
+import Loading from '../components/Loading';
 
 export default function ConfirmImg() {
   const { params } = useRoute();
@@ -13,6 +16,7 @@ export default function ConfirmImg() {
   const { setHistory } = useContext(AuthContext);
   const token = SecureStore.getItem('access_token');
   const [singleFile, setSingleFile] = useState(null);
+  const { isLoading, setIsLoading } = useContext(AuthContext);
 
   const fetchDonorByUsers = async () => {
     const { data } = await axios.get('/donors', {
@@ -63,6 +67,7 @@ export default function ConfirmImg() {
       });
 
       try {
+        setIsLoading(true);
         let res = await axios.patch('/donorconfirmation/' + params.donorConfirmId, data, {
           headers: {
             Accept: 'application/json',
@@ -81,6 +86,8 @@ export default function ConfirmImg() {
         // Error retrieving data
         // Alert.alert('Error', error.message);
         console.log('error upload', error);
+      } finally {
+        setIsLoading(false);
       }
     } else {
       // If no file selected the show alert
@@ -125,6 +132,8 @@ export default function ConfirmImg() {
       <TouchableOpacity style={styles.buttonStyle} activeOpacity={0.5} onPress={uploadImage}>
         <Text style={styles.buttonTextStyle}>Upload File</Text>
       </TouchableOpacity>
+
+      {isLoading ? <Loading /> : null}
     </View>
   );
 }

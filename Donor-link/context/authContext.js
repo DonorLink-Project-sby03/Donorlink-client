@@ -5,11 +5,22 @@ export const AuthContext = createContext('');
 
 export default function AuthContextProvider({ children }) {
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [history, setHistory] = useState([]);
   const [items, setItems] = useState([]);
   const [users, setUsers] = useState({});
   const token = SecureStore.getItem('access_token');
+  useEffect(() => {
+    async function getToken() {
+      try {
+        let token = await SecureStore.getItemAsync('access_token');
+        if (token) setIsSignedIn(true);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getToken();
+  }, []);
 
   const fetchRecipients = async () => {
     try {
@@ -43,25 +54,11 @@ export default function AuthContextProvider({ children }) {
     }
   };
 
-
   useEffect(() => {
-    async function getToken() {
-      try {
-        let token = await SecureStore.getItemAsync('access_token');
-        if (token) setIsSignedIn(true);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 2000);
-      }
-    }
     fetchDonorByUsers();
     fetchRecipients();
     fetchUser();
-    getToken();
   }, []);
 
-  return <AuthContext.Provider value={{ isSignedIn, setIsSignedIn, items, setItems, history, setHistory, users, fetchRecipients }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ isSignedIn, setIsSignedIn, isLoading, setIsLoading, items, setItems, history, setHistory, users, fetchUser, setUsers, fetchRecipients }}>{children}</AuthContext.Provider>;
 }

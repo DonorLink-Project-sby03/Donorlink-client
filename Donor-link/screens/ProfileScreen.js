@@ -23,121 +23,55 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import { format } from "date-fns";
 
 export const ProfileScreen = () => {
-  const monthNames = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
+  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   const copyToClipboard = (text) => {
     Clipboard.setString(text);
-    alert("Text copied to clipboard!");
+    alert('Text copied to clipboard!');
   };
 
-  const { users } = useContext(AuthContext);
-  const [data, setData] = useState("");
-  const [user, setUser] = useState("");
   const navigation = useNavigation();
-  let getData = async () => {
-    let token = await SecureStore.getItemAsync("access_token" || null);
-    console.log(token);
-    try {
-      const { data } = await instance({
-        headers: {
-          Authorization: `Bearer ${await SecureStore.getItemAsync(
-            "access_token"
-          )}`,
-        },
-        method: "GET",
-        url: "/profile/",
-      });
-      setData(data);
-    } catch (error) {
-      console.log();
-    }
-  };
-
-  let getDataUser = async () => {
-    try {
-      const { data } = await instance({
-        headers: {
-          Authorization: `Bearer ${await SecureStore.getItemAsync(
-            "access_token"
-          )}`,
-        },
-        method: "GET",
-        url: "/users/",
-      });
-      setUser(data);
-    } catch (error) {
-      console.log();
-    }
-  };
-
-  useEffect(() => {
-    getData();
-    getDataUser();
-  }, []);
-
-  const { isSignedIn, setIsSignedIn } = useContext(AuthContext);
-  const handeLogout = async () => {
-    try {
-      await SecureStore.deleteItemAsync("access_token");
-      setIsSignedIn(false);
-      // navigation.navigate("Login")
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { fetchUser, users } = useContext(AuthContext);
 
   const handleAddProfile = async () => {
     try {
-      navigation.navigate("AddForm");
+      navigation.navigate('AddForm');
     } catch (error) {
       console.log(error);
     }
   };
-  const createdAtDate = new Date(user.createdAt);
+  const createdAtDate = new Date(users?.createdAt);
   const testDate = new Date();
-  if (
-    createdAtDate.getDate() === testDate.getDate() &&
-    createdAtDate.getMonth() === testDate.getMonth() &&
-    createdAtDate.getFullYear() === testDate.getFullYear()
-  ) {
+  if (createdAtDate.getDate() === testDate.getDate() && createdAtDate.getMonth() === testDate.getMonth() && createdAtDate.getFullYear() === testDate.getFullYear()) {
     // Format tanggal dari createdAt menjadi "DD MMM YYYY"
-    const formattedDate = format(createdAtDate, "dd MMM yyyy");
+    const formattedDate = format(createdAtDate, 'dd MMM yyyy');
   }
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <View style={{ backgroundColor: "white", flex: 1 }}>
-      {data ? (
+      {users ? (
         <>
           <View style={styles.rowContainer}>
             <View style={styles.outerCircle}>
               <View style={styles.overlay} />
-              <Image source={{ uri: data?.imageUrl }} style={styles.imageStyle} />
+              <Image source={{ uri: users?.Profile?.imageUrl }} style={styles.imageStyle} />
             </View>
-            {data.User?.name.split(" ").length === 1 ||
+            {users?.name.split(" ").length === 1 ||
             users?.name.split(" ").length === 1 ? (
               <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-                {users?.name || data?.User.name}
+                {users?.name}
               </Text>
             ) : (
               <View>
                 <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-                  {data?.User?.name.split(" ")[0] || users?.name.split(" ")[0]}
+                  {users?.name.split(" ")[0] || users?.name.split(" ")[0]}
                 </Text>
                 <Text style={{ fontSize: 25 }}>
-                  {data?.User?.name.split(" ").slice(1).join(" ") ||
+                  {users?.name.split(" ").slice(1).join(" ") ||
                     users.name.split(" ").slice(1).join(" ")}
                 </Text>
               </View>
@@ -162,9 +96,9 @@ export const ProfileScreen = () => {
                     alignItems: "center",
                   }}
                 >
-                  <Text style={styles.pribadiRight}>{data?.identityNumber} </Text>
+                  <Text style={styles.pribadiRight}>{users?.Profile.?.identityNumber} </Text>
                   <TouchableOpacity
-                    onPress={() => copyToClipboard(data?.identityNumber)}
+                    onPress={() => copyToClipboard(users?.Profile?.identityNumber)}
                   >
                     <FontAwesome6 name="copy" size={24} color="#F75369" />
                   </TouchableOpacity>
@@ -172,23 +106,23 @@ export const ProfileScreen = () => {
               </View>
               <View style={styles.data}>
                 <Text style={styles.pribadi}>Gender</Text>
-                <Text style={styles.pribadiRight}>{data?.gender}</Text>
+                <Text style={styles.pribadiRight}>{users?.Profile?.gender}</Text>
               </View>
               <View style={styles.data}>
                 <Text style={styles.pribadi}>Alamat</Text>
-                <Text style={styles.pribadiRight}>{data?.address}</Text>
+                <Text style={styles.pribadiRight}>{users?.Profile?.address}</Text>
               </View>
               <View style={styles.data}>
                 <Text style={styles.pribadi}>Pekerjaan</Text>
-                <Text style={styles.pribadiRight}>{data?.job}</Text>
+                <Text style={styles.pribadiRight}>{users?.Profile?.job}</Text>
               </View>
               <View style={styles.data}>
                 <Text style={styles.pribadi}>No Telephone</Text>
-                <Text style={styles.pribadiRight}>{data?.phoneNumber}</Text>
+                <Text style={styles.pribadiRight}>{users?.Profile?.phoneNumber}</Text>
               </View>
               <View style={styles.data}>
                 <Text style={styles.pribadi}>Golongan Darah</Text>
-                <Text style={styles.pribadiRight}>{data?.bloodType}</Text>
+                <Text style={styles.pribadiRight}>{users?.Profile?.bloodType}</Text>
               </View>
               <View style={styles.data}>
                 <Text style={styles.pribadi}>Dibuat pada</Text>
@@ -216,6 +150,14 @@ export const ProfileScreen = () => {
                 </View>
               </TouchableOpacity>
             </View>
+            {users?.name.split(' ').length === 1 ? (
+              <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{users?.name}</Text>
+            ) : (
+              <View>
+                <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{users?.name.split(' ')[0]}</Text>
+                <Text style={{ fontSize: 25 }}>{users.name.split(' ').slice(1).join(' ')}</Text>
+              </View>
+            )}
           </View>
         </>
       ) : (
@@ -262,14 +204,14 @@ export const ProfileScreen = () => {
 
 const styles = StyleSheet.create({
   rowContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     marginTop: 30,
   },
   row: {
-    flexDirection: "row",
-    justifyContent: "space-betweens",
-    backgroundColor: "#efecec",
+    flexDirection: 'row',
+    justifyContent: 'space-betweens',
+    backgroundColor: '#efecec',
     paddingHorizontal: 15,
   },
   imageStyle: {
@@ -288,12 +230,12 @@ const styles = StyleSheet.create({
   },
   pribadi: {
     fontSize: 23,
-    color: "grey",
+    color: 'grey',
     paddingBottom: 10,
   },
   pribadiRight: {
     fontSize: 24,
-    color: "black",
+    color: 'black',
     paddingBottom: 10,
   },
   outerCircle: {
