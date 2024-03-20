@@ -59,6 +59,7 @@ export default function AuthContextProvider({ children }) {
     fetchRecipients();
     fetchUser();
   }, []);
+  console.log(users, 'auth');
 
   return <AuthContext.Provider value={{ isSignedIn, setIsSignedIn, isLoading, setIsLoading, items, setItems, history, setHistory, users, fetchUser, setUsers, fetchRecipients }}>{children}</AuthContext.Provider>;
 }

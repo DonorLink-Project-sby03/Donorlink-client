@@ -19,7 +19,7 @@ const typeBlood = [
 ];
 
 export default function Recipient() {
-  const { isSignedIn } = useContext(AuthContext);
+  const { isSignedIn, fetchRecipients } = useContext(AuthContext);
   const navigation = useNavigation();
   const token = SecureStore.getItem('access_token');
   const [resultPost, setResultPost] = useState({});
@@ -53,6 +53,7 @@ export default function Recipient() {
       setStock('');
       setLocation('');
       setSelected(false);
+      fetchRecipients()
     } catch (error) {
       console.log(error);
     }

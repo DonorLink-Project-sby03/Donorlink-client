@@ -47,7 +47,7 @@ export default function CardChat({ data }) {
           />
           <View style={{ flex: 1 }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{data?.User?.name}</Text>
+              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{data?.User?.username}</Text>
               <View style={{ flexDirection: 'row' }}>
                 <MaterialIcons name="bloodtype" size={25} color="#F75369" />
                 <Text style={{ fontSize: 17, color: '#F75369' }}>{data?.bloodType} </Text>
