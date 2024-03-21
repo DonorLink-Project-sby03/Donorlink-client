@@ -16,7 +16,7 @@ import { AuthContext } from "../context/authContext";
 import { useContext, useEffect, useState } from "react";
 
 export const LandingPage = () => {
-  const [backgroundColor, setBackgroundColor] = useState("#F75369");
+  const [backgroundColor, setBackgroundColor] = useState("#Ffc2c2");
 
   const handlePress = () => {
     setBackgroundColor("#F75369");
@@ -91,7 +91,7 @@ export const LandingPage = () => {
   return (
     <View style={{ backgroundColor: "white", flex: 1 }}>
       <>
-        <View style={styles.rowContainer}>
+        <View style={styles.container}>
           <View style={styles.outerCircle}>
             <View style={styles.overlay} />
             {users?.Profile?.imageUrl === null ||
@@ -108,17 +108,19 @@ export const LandingPage = () => {
               />
             )}
           </View>
-          <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-            {users?.name?.includes(" ") ? (
-              <>
-                {users.name.split(" ").slice(0, 1).join(" ")}
-                {"\n"}
-                {users.name.split(" ").slice(1).join(" ")}
-              </>
-            ) : (
-              users?.name
-            )}
-          </Text>
+          <View style={{marginLeft: 30}}>
+            <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+              {users?.name?.includes(" ") ? (
+                <>
+                  {users.name.split(" ").slice(0, 1).join(" ")}
+                  {"\n"}
+                  {users.name.split(" ").slice(1).join(" ")}
+                </>
+              ) : (
+                users?.name
+              )}
+            </Text>
+          </View>
         </View>
         <View style={{ marginTop: 16, paddingBottom: 10 }}>
           <View
@@ -126,7 +128,6 @@ export const LandingPage = () => {
               height: 3,
               backgroundColor: "#F75369",
               alignSelf: "stretch",
-              marginBottom: 15,
             }}
           />
           {/* Profile and Postingan */}
@@ -139,7 +140,7 @@ export const LandingPage = () => {
               <View style={styles.viewButton}>
                 <View style={styles.data}>
                   <FontAwesome5 name="user-circle" size={35} color={color} />
-                  <Text>My Account</Text>
+                  <Text style={styles.iconTitle}>My Account</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -151,7 +152,7 @@ export const LandingPage = () => {
               <View style={styles.viewButton}>
                 <View style={styles.data}>
                 <MaterialCommunityIcons name="file-document-multiple-outline" size={35} color={color} />
-                  <Text>Post</Text>
+                  <Text style={styles.iconTitle}>Post</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -166,7 +167,7 @@ export const LandingPage = () => {
               <View style={styles.viewButton}>
                 <View style={styles.data}>
                   <Fontisto name="history" size={35} color={color} />
-                  <Text>History</Text>
+                  <Text style={styles.iconTitle}>My Donor</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -178,40 +179,50 @@ export const LandingPage = () => {
               <View style={styles.viewButton}>
                 <View style={styles.data}>
                   <Ionicons name="add" size={35} color={color} />
-                  <Text>Add Recipients</Text>
+                  <Text style={styles.iconTitle}>Add Post</Text>
                 </View>
               </View>
             </TouchableOpacity>
           </View>
           {/* Logout */}
           <TouchableOpacity onPress={handeLogout}>
-        <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              marginHorizontal: 15,
-              backgroundColor: "#F75369",
-              marginVertical: 10,
-              borderRadius: 10,
-              paddingHorizontal: 10,
-            }}
-          >
-            <Text style={{ fontSize: 23, color: "white", paddingBottom: 10 }}>
-              Logout
-            </Text>
-          </View>
-        </TouchableOpacity>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                marginHorizontal: 20,
+                backgroundColor: "#F75369",
+                marginVertical: 10,
+                borderRadius: 10,
+                paddingHorizontal: 10,
+                marginTop: 60
+              }}
+            >
+              <Text style={{ fontSize: 23, color: "white", paddingBottom: 10 }}>
+                Logout
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </>
     </View>
-  );
+  );  
 };
 
 const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "center",
+    marginTop: 20,
+    paddingHorizontal: 20,
+    gap: 20
+  },
+  container: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
     marginTop: 30,
+    paddingHorizontal: 37,
+    alignItems: 'center'
   },
   touchable: {
     backgroundColor: "#F75369",
@@ -223,8 +234,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   imageStyle: {
-    width: 78,
-    height: 78,
+    width: 89,
+    height: 89,
     borderRadius: 50,
     color: "white",
     backgroundColor: "white",
@@ -235,6 +246,7 @@ const styles = StyleSheet.create({
     height: 125,
     width: 150,
     borderRadius: 10,
+    marginBottom: 5,
   },
   pribadiRight: {
     fontSize: 24,
@@ -242,8 +254,8 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   outerCircle: {
-    width: 94, // Lebih besar dari ukuran gambar
-    height: 94, // Lebih besar dari ukuran gambar
+    width: 103, // Lebih besar dari ukuran gambar
+    height: 103, // Lebih besar dari ukuran gambar
     borderRadius: 75, // Setengah dari lebar dan tinggi untuk membuat lingkaran di luar
     overflow: "hidden", // Memastikan gambar tetap di dalam lingkaran
     alignItems: "center",
@@ -265,4 +277,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     zIndex: 1,
   },
+  iconTitle: {
+    marginTop: 10
+  }
 });

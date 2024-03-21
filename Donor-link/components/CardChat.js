@@ -107,15 +107,6 @@ export default function CardChat({ data }) {
                   </View>
                 </Pressable>
               </View>
-              <View
-                style={{
-                  height: 2,
-                  backgroundColor: "#F75369",
-                  alignSelf: "stretch",
-                  marginTop: 2,
-                  marginHorizontal: 15,
-                }}
-              />
             </View>
           </View>
         </View>
@@ -128,7 +119,7 @@ export default function CardChat({ data }) {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    backgroundColor: "#fcfcfc", // Warna abu-abu
+    backgroundColor: "#f2f4f7", // Warna abu-abu
     borderRadius: 10,
     overflow: "hidden",
     marginBottom: 10,
@@ -137,6 +128,7 @@ const styles = StyleSheet.create({
   cardContent: {
     flexDirection: "row",
     padding: 15,
+    marginBottom: 15
   },
   scrollView: {
     marginHorizontal: 10,

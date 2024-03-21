@@ -42,10 +42,11 @@ export default function HomePages({ navigation }) {
         <View
           style={{
             flexDirection: "row",
-            marginLeft: 35,
+            marginLeft: 20,
             alignItems: "center",
             position: "relative", // Menetapkan posisi relatif untuk menggunakan zIndex
-            marginTop: 10
+            marginTop: 10,
+            marginBottom: 5
           }}
         >
           <View
@@ -63,14 +64,15 @@ export default function HomePages({ navigation }) {
               style={{
                 zIndex: 1, // Menetapkan zIndex pada TextInput
                 height: 35,
-                width: 230,
-                backgroundColor: "#fbfbfb",
+                width: 273,
+                backgroundColor: "#f2f4f7",
                 borderRadius: 10,
                 paddingLeft: 10,
                 fontSize: 20
               }}
             ></TextInput>
           </View>
+          <TouchableOpacity>
           <View
             style={{
               height: 35,
@@ -82,10 +84,9 @@ export default function HomePages({ navigation }) {
               alignItems: "center",
             }}
           >
-            <TouchableOpacity>
               <Text onPress={handlePress} style={{color: 'white'}}>Find</Text>
-            </TouchableOpacity>
           </View>
+            </TouchableOpacity>
         </View>
         {
           !dataSearch ? (

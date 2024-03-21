@@ -175,84 +175,105 @@ export default function Detail() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <MapView
-        style={{ width: "100%", height: "50%" }}
-        onRegionChange={onRegionChange}
-        initialRegion={{
-          latitude: latitude,
-          latitudeDelta: 0.24357150578851883,
-          longitude: longitude,
-          longitudeDelta: 0.1615377143025114,
-        }}
-      >
-        {showLocationOfInterest()}
-        {console.log(
-          locationOfInterest[0].location,
-          "<<<<<< locationOfInterest[0].location"
-        )}
-        {console.log(
-          locationOfInterest[1].location,
-          "<<<<<< locationOfInterest[1].location"
-        )}
-        <MapViewDirections
-          origin={locationOfInterest[0].location}
-          destination={locationOfInterest[1].location}
-          apikey="AIzaSyCJJQ3KtSkbrywHS05Ak240jULhiwEmpk0"
-          strokeWidth={3}
-          strokeColor="pink"
-        />
-      </MapView>
-      <ScrollView>
-        <View style={{paddingHorizontal: 0, marginHorizontal: 45}}>
-          {/* <Image source={{ uri: item.image }} style={{ width: '100%', height: 300 }} /> */}
-          <View style={{ marginTop: 10}}>
-            <View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginBottom: 5,
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text style={{ fontSize: 20 }}>{item?.description}</Text>
-              </View>
-              <View
-                style={{ flexDirection: "row", marginBottom: 5, marginTop: 10 }}
-              >
-                <MaterialIcons name="bloodtype" size={30} color="red" />
-                <Text style={{ fontSize: 20, color: "red" }}>
-                  {item?.bloodType}
-                </Text>
-              </View>
-            </View>
-            <View style={{ flexDirection: "row", marginTop: 20 }}>
-              <Text style={{ marginLeft: 5, fontSize: 20, color: "grey" }}>
-                {donation ? donation + "ml" : ""} collected from {total + "ml"} total
-              </Text>
-              </View>
-              <ProgressBar
-                    progress={total / 100}
-                    color="red"
-                    style={{ marginTop: 10, height: 10, borderRadius: 2, width: 322 }}
-                  />
-                <TouchableOpacity onPress={() => handleDonor()}>
-            <View
-              style={{
-                alignItems: "center",
-                height: 40,
-                width: 325,
-                backgroundColor: "#F75369",
-                justifyContent: "center",
-                borderRadius: 10,
-                marginTop: 30,
-              }}
-            >
-                <Text style={{fontSize: 20, color: 'white'}}>Apply</Text>
-            </View>
-              </TouchableOpacity>
+  <MapView
+    style={{ width: "100%", height: "50%" }}
+    onRegionChange={onRegionChange}
+    initialRegion={{
+      latitude: latitude,
+      latitudeDelta: 0.24357150578851883,
+      longitude: longitude,
+      longitudeDelta: 0.1615377143025114,
+    }}
+  >
+    {showLocationOfInterest()}
+    {console.log(
+      locationOfInterest[0].location,
+      "<<<<<< locationOfInterest[0].location"
+    )}
+    {console.log(
+      locationOfInterest[1].location,
+      "<<<<<< locationOfInterest[1].location"
+    )}
+    <MapViewDirections
+      origin={locationOfInterest[0].location}
+      destination={locationOfInterest[1].location}
+      apikey="AIzaSyCJJQ3KtSkbrywHS05Ak240jULhiwEmpk0"
+      strokeWidth={3}
+      strokeColor="pink"
+    />
+  </MapView>
+  <ScrollView>
+    <View style={{ paddingHorizontal: 0, marginHorizontal: 20 }}>
+      {/* <Image source={{ uri: item.image }} style={{ width: '100%', height: 300 }} /> */}
+      <View style={{ marginTop: 10 }}>
+        <View>
+          <View
+            style={{
+              flexDirection: "row",
+              marginBottom: 5,
+              justifyContent: "space-between",
+            }}
+          >
+            <Text style={{ fontSize: 20, marginLeft: 5 }}>{item?.description}</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              marginBottom: 5,
+              marginTop: 10,
+            }}
+          >
+            <MaterialIcons name="bloodtype" size={30} color="red" />
+            <Text style={{ fontSize: 20, color: "red" }}>
+              {item?.bloodType}
+            </Text>
           </View>
         </View>
-      </ScrollView>
-    </SafeAreaView>
+        <View style={{ marginTop: 20 }}>
+          <Text style={{ marginLeft: 5, fontSize: 20, color: "#F75369" }}>{donation ? donation + "ml" : "0ml"}</Text>
+          <Text style={{ marginLeft: 5, fontSize: 20, color: "grey" }}>
+            collected from {total + "ml"}{" "}
+            total
+          </Text>
+        </View>
+        <View
+          style={{
+            marginTop: 10,
+            width: 240,
+            marginLeft: 5
+          }}
+        >
+          <ProgressBar
+            progress={total / 100}
+            color="red"
+            style={{
+              height: 14,
+              borderRadius:15,
+              width: "100%",
+              width: 340
+            }}
+          />
+        </View>
+        <TouchableOpacity onPress={() => handleDonor()}>
+          <View
+            style={{
+              alignItems: "center",
+              height: 40,
+              width: 340,
+              backgroundColor: "#F75369",
+              justifyContent: "center",
+              borderRadius: 10,
+              marginTop: 20,
+              alignSelf: "center",
+            }}
+          >
+            <Text style={{ fontSize: 20, color: "white" }}>Apply</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    </View>
+  </ScrollView>
+</SafeAreaView>
+
   );
 }
