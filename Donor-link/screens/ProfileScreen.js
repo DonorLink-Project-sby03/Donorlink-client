@@ -79,36 +79,35 @@ export const ProfileScreen = () => {
       {users?.Profile !== null ? (
         <>
           <View style={styles.rowContainer}>
-            <View style={styles.outerCircle}>
-              <View style={styles.overlay} />
-              {users?.Profile?.imageUrl === null ||
-              users.Profile.imageUrl === "" ? (
-                <Image
-                  source={require("../assets/user.png")}
-                  style={styles.imageStyle}
-                />
-              ) : (
-                <Image
-                  source={{ uri: users?.Profile?.imageUrl }}
-                  style={styles.imageStyle}
-                />
-              )}
-            </View>
-            {users?.name.split(" ").length === 1 ? (
-              <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-                {users?.name}
-              </Text>
+          <View style={styles.outerCircle}>
+            <View style={styles.overlay} />
+            {users?.Profile?.imageUrl === null ||
+            users?.Profile?.imageUrl === "" ||
+            users?.Profile?.imageUrl === undefined ? (
+              <Image
+                source={require("../assets/user.png")}
+                style={styles.imageStyle}
+              />
             ) : (
-              <View>
-                <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-                  {users?.name.split(" ")[0] || users?.name.split(" ")[0]}
-                </Text>
-                <Text style={{ fontSize: 25 }}>
-                  {users?.name.split(" ").slice(1).join(" ") ||
-                    users.name.split(" ").slice(1).join(" ")}
-                </Text>
-              </View>
+              <Image
+                source={{ uri: users?.Profile?.imageUrl }}
+                style={styles.imageStyle}
+              />
             )}
+          </View>
+          <View style={{marginLeft: 30}}>
+            <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+              {users?.name?.includes(" ") ? (
+                <>
+                  {users.name.split(" ").slice(0, 1).join(" ")}
+                  {"\n"}
+                  {users.name.split(" ").slice(1).join(" ")}
+                </>
+              ) : (
+                users?.name
+              )}
+            </Text>
+          </View>
           </View>
           <View style={{ marginTop: 16, paddingBottom: 10 }}>
             <View
@@ -244,8 +243,10 @@ export const ProfileScreen = () => {
 const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    marginTop: 30,
+    justifyContent: "flex-start",
+    marginTop: 10,
+    paddingHorizontal: 37,
+    alignItems: 'center'
   },
   row: {
     flexDirection: "row",
@@ -254,8 +255,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   imageStyle: {
-    width: 78,
-    height: 78,
+    width: 89,
+    height: 89,
     borderRadius: 50,
     color: "white",
     backgroundColor: "white",
@@ -267,21 +268,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#fcfcfc",
     marginVertical: 7,
     borderRadius: 10,
-    paddingHorizontal: 10,
+    paddingHorizontal: 25,
   },
   pribadi: {
-    fontSize: 23,
+    fontSize: 18,
     color: "grey",
     paddingBottom: 10,
   },
   pribadiRight: {
-    fontSize: 24,
+    fontSize: 18,
     color: "black",
     paddingBottom: 10,
   },
   outerCircle: {
-    width: 94, // Lebih besar dari ukuran gambar
-    height: 94, // Lebih besar dari ukuran gambar
+    width: 103, // Lebih besar dari ukuran gambar
+    height: 103, // Lebih besar dari ukuran gambar
     borderRadius: 75, // Setengah dari lebar dan tinggi untuk membuat lingkaran di luar
     overflow: "hidden", // Memastikan gambar tetap di dalam lingkaran
     alignItems: "center",

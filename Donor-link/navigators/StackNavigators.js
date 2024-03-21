@@ -103,7 +103,7 @@ export default function StackNavigator() {
             name="History"
             component={History}
             options={{
-              title: "History",
+              title: "My Donor",
               headerTintColor: "#F75369",
               headerTitleStyle: {
                 fontSize: 30, // Atur ukuran teks
