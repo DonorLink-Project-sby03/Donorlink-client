@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useContext, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, PermissionsAndroid, Alert, TextInput } from 'react-native';
+import { StyleSheet, Text, View, PermissionsAndroid, Alert, TextInput } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import axios from '../instance/config';
@@ -81,7 +81,7 @@ export default function ImgProfile() {
         }
       } catch (error) {
         // Error retrieving data
-        // Alert.alert('Error', error.message);
+        Alert.alert('Info',error.message.split('with status code')[0])
         console.log('error upload', error);
       } finally {
         setIsLoading(false);

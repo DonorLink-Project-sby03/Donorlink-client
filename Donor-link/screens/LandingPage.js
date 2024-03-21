@@ -84,9 +84,9 @@ export const LandingPage = () => {
   };
   let color = "#F75369";
 
-  useEffect(() => {
+  useEffect(()=>{
     fetchUser()
-  }, [])
+  },[])
 
   return (
     <View style={{ backgroundColor: "white", flex: 1 }}>

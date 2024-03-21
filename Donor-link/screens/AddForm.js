@@ -7,11 +7,11 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
+  Alert,
 } from "react-native";
 import { RadioButton } from "react-native-paper";
 import instance from "../instance/config"; // Pastikan Anda mengimpor instance dengan benar
 import * as SecureStore from "expo-secure-store";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
 import DatePicker from "react-native-modern-datepicker";
 import { Dropdown } from "react-native-element-dropdown";
@@ -38,7 +38,7 @@ export default function AddForm() {
   const [imageUrl, setImageUrl] = useState("");
   const [bloodType, setBloodType] = useState("");
   const navigation = useNavigation();
-  console.log(dob, '<<');
+  // console.log(dob, '<<');
   const { fetchUser } = useContext(AuthContext);
 
   const submitHandler = async () => {
@@ -68,6 +68,7 @@ export default function AddForm() {
         id: data.id,
       });
     } catch (error) {
+      Alert.alert('Info',error.message.split('with status code')[0])
       console.log(error);
     }
   };
